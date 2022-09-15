@@ -1,4 +1,4 @@
-_base = "https://gitlab.com/luigigenovese/bigdft-school/-/blob/main/packaging/"
+_base = "https://gitlab.com/luigigenovese/bigdft-school/-/raw/main/packaging/"
 _pkg = "bigdft-suite-1.9.3_rc.2-mpi_openmpi_py37h008c211_0.tar.bz2"
 
 def skip():
