@@ -15,7 +15,7 @@ def bgc(color, cell=None):
 from os.path import join
 from os import sep
 school_url = 'https://gitlab.com/luigigenovese/bigdft-school'
-trunk_url =  '-b 1.9.3-new https://gitlab.com/luigigenovese/bigdft-suite.git'
+trunk_url =  'https://gitlab.com/luigigenovese/bigdft-suite.git'
 base_path = join(sep,'content')
 drive_path = join(base_path, 'drive')
 training_path = join('bigdft-school')
@@ -96,6 +96,7 @@ def set_ready():
 
 def client(locally=False):
     from os.path import join
+    from os import environ
     if locally:
        base = base_path
     else:
