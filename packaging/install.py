@@ -3,9 +3,7 @@ from os import sep
 repo_url = 'https://gitlab.com/luigigenovese/bigdft-school'
 drive_path = join(sep,'content', 'drive')
 training_path = join(drive_path, 'MyDrive','bigdft-school')
-packaging_path = join(training_path, 'bigdft-school', 'packaging')
-conda_package = join(packaging_path, 'bigdft-suite-1.9.3_rc.2-mpi_openmpi_py37h008c211_0.tar.bz2')
-extra_package = join(packaging_path, 'extra_libs.tar.bz2')
+conda_package = join(training_path, 'bigdft-school', 'packaging', 'bigdft-suite-1.9.3_rc.2-mpi_openmpi_py37h008c211_0.tar.bz2')
 prefix = join(training_path, 'install')
 bigdft_root_path = join(prefix, 'bin')
 bigdft_executable = join(bigdft_root_path, 'bigdft')
@@ -13,11 +11,8 @@ bigdft_pythonpath = join(prefix, 'lib', 'python3.7', 'site-packages') # can use 
 
 def execute(*args):
   from subprocess import check_output
-  print('Executing: '+' '.join(args))
-  try:
-      result = check_output(args)
-  except subprocess.CalledProcessError as e:
-      print('Error Occurred: '+ e.output)  
+  print(' '.join(args))
+  result = check_output(args)
   print(result.decode('utf-8'))
 
 def mount_drive():
@@ -30,7 +25,7 @@ def change_dir():
   chdir(training_path)
 
 def get_repo():
-  execute("git","clone",'--depth','1',repo_url)
+  execute("git","clone",repo_url)
 
 def set_environment():
   from os import environ
@@ -42,21 +37,40 @@ def skip():
    from os.path import isfile
    return isfile(bigdft_executable)
 
-def untar_bz2(archive,dest='install'):
-    execute('tar','xjf',archive,'-C',dest)
+def install_colab():
+    from os import system
+    from subprocess import check_output
+    execute("pip", "install", "-q", "condacolab")
 
+def setup_colab():
+    import condacolab
+    condacolab.install()
+
+def get_conda():
+  install_colab()
+  setup_colab()
+
+def activate_conda():
+  from subprocess import check_output
+  execute('conda', 'create', '-p', prefix)
+  execute('conda', 'init', 'bash')
+  execute('bash','activate', prefix)
 
 def install_bigdft():
-    untar_bz2(conda_package)
-    untar_bz2(extra_package)
+    from subprocess import check_output
+    execute('conda','install','-p', prefix, conda_package)
+    execute('conda', 'update', '--all')
 
 def install_packages(*args):
   execute('pip','install','-t',bigdft_pythonpath,args)
-
+    
 def full_procedure():
   mount_drive()
   change_dir()
   if not skip():
+    get_repo()
+    get_conda()
+    activate_conda()
     install_bigdft()
   set_environment()
 
