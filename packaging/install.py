@@ -70,12 +70,15 @@ def get_conda():
   setup_colab()
 
 def full_suite():
-    from os import environ
     get_conda()
     change_dir(base_path)
     get_school_repo()
     install_bigdft()
+
+def set_ready():
+    from os import environ, path
     environ['BIGDFT_ROOT'] = ''
+    change_dir(path.join(base_path,training_path))
 
 def client(locally=False):
     from os.path import join
