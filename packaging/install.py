@@ -72,7 +72,7 @@ def untar_bz2(archive,dest='install'):
     execute('tar','xjf',archive,'-C',dest)
 
 def install_colab():
-    packages('condacolab',path=None,options='-q')
+    packages('condacolab',path=None,options=['-q'])
 
 def setup_colab():
     import condacolab
@@ -117,11 +117,11 @@ def get_school_repo():
     get_repo()
     change_dir(training_path)
 
-def packages(*args,path=bigdft_pythonpath,options=''):
+def packages(*args,path=bigdft_pythonpath,options=[]):
     if path is not None:
-      execute('pip','install','-t',path,options,*args)
+      execute('pip','install','-t',path,*options,*args)
     else:
-      execute('pip','install',options,*args)
+      execute('pip','install',*options,*args)
 
 def full_procedure():
   mount_drive()
