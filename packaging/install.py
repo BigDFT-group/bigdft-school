@@ -1,3 +1,17 @@
+from IPython.core.magic import register_cell_magic
+
+@register_cell_magic
+def bgc(color, cell=None):
+    from IPython.display import HTML, display
+    script = (
+        "var cell = this.closest('.jp-CodeCell');"
+        "var editor = cell.querySelector('.jp-Editor');"
+        "editor.style.background='{}';"
+        "this.parentNode.removeChild(this)"
+    ).format(color)
+
+    display(HTML('<img src onerror="{}">'.format(script)))
+
 from os.path import join
 from os import sep
 school_url = 'https://gitlab.com/luigigenovese/bigdft-school'
@@ -31,8 +45,8 @@ def change_dir(pwd=training_path):
   execute('mkdir','-p',path.abspath(pwd))
   chdir(pwd)
 
-def get_repo(url=school_url):
-  execute("git","clone",'--depth','1',url)
+def get_repo(url=school_url,options=[]):
+  execute("git","clone",'--depth','1',*options,url)
 
 def set_environment():
   from os import environ
@@ -89,8 +103,9 @@ def client(locally=False):
        mount_drive()
     change_dir(base)
     get_school_repo()
-    get_repo(url=trunk_url)
-    execute('bigdft-suite/Installer.py','-f','ubuntu_MPI.rc','-a','no_upstream','build','bigdft-client','-y')
+    get_repo(url=trunk_url,options=['-b', '1.9.3-new'])
+    environ['JHBUILD_RUN_AS_ROOT']='please do it'
+    execute('python','bigdft-suite/Installer.py','-f','ubuntu_MPI.rc','-a','no_upstream','build','bigdft-client','-y')
     set_environment()
 
 def get_school_repo():
