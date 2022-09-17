@@ -44,6 +44,7 @@ def skip():
    return isfile(bigdft_executable)
 
 def untar_bz2(archive,dest='install'):
+    execute('mkdir','-p',dest)
     execute('tar','xjf',archive,'-C',dest)
 
 
