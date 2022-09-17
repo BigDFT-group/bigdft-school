@@ -1,6 +1,7 @@
 from os.path import join
 from os import sep
-repo_url = 'https://gitlab.com/luigigenovese/bigdft-school'
+school_url = 'https://gitlab.com/luigigenovese/bigdft-school'
+trunk_url =  '-b 1.9.3-new https://gitlab.com/luigigenovese/bigdft-suite.git'
 drive_path = join(sep,'content', 'drive')
 training_path = join(drive_path, 'MyDrive','bigdft-school')
 packaging_path = join(training_path, 'bigdft-school', 'packaging')
@@ -19,7 +20,6 @@ def execute(*args):
       print(result.decode('utf-8'))
   except CalledProcessError as e:
       print('Error Occurred: ','\n', e.output.decode())  
-  
 
 def mount_drive():
   from google.colab import drive
@@ -30,8 +30,8 @@ def change_dir():
   execute('mkdir','-p',training_path)
   chdir(training_path)
 
-def get_repo():
-  execute("git","clone",'--depth','1',repo_url)
+def get_repo(url=school_url):
+  execute("git","clone",'--depth','1',url)
 
 def set_environment():
   from os import environ
@@ -43,6 +43,10 @@ def skip():
    from os.path import isfile
    return isfile(bigdft_executable)
 
+def ok_for_client():
+    from os.path import isdir
+    return isdir(bigdft_pythonpath)
+
 def untar_bz2(archive,dest='install'):
     execute('mkdir','-p',dest)
     execute('tar','xjf',archive,'-C',dest)
@@ -53,14 +57,18 @@ def install_bigdft():
     untar_bz2(conda_package)
     untar_bz2(extra_package)
 
+def install_client():
+    get_repo(url=trunk_url)
+    execute('bigdft-suite/Installer.py','-f','ubuntu_MPI.rc','-a','no_upstream','build','bigdft-client','-y')
+
 def install_packages(*args):
   execute('pip','install','-t',bigdft_pythonpath,args)
 
 def full_procedure():
   mount_drive()
   change_dir()
-  if not skip():
-    install_bigdft()
+  if not ok_for_client():
+    install_client()
   set_environment()
 
 full_procedure()
