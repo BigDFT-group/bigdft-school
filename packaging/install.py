@@ -40,6 +40,10 @@ def mount_drive():
   from google.colab import drive
   drive.mount(drive_path, force_remount=True)
 
+def close_drive():
+    from google.colab import drive
+    drive.flush_and_unmount()
+
 def change_dir(pwd=training_path):
   from os import chdir, path
   execute('mkdir','-p',path.abspath(pwd))
