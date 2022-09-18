@@ -44,20 +44,27 @@ def close_drive():
     from google.colab import drive
     drive.flush_and_unmount()
 
+def ensure_dir(pth):
+  from os.path import abspath
+  execute('mkdir','-p',abspath(pth))
+
 def change_dir(pwd=training_path):
-  from os import chdir, path
-  execute('mkdir','-p',path.abspath(pwd))
+  from os import chdir
+  ensure_dir(pwd)
   chdir(pwd)
 
 def get_repo(url=school_url,options=[]):
   execute("git","clone",'--depth','1',*options,url)
 
 def set_environment():
-  from os import environ
+  from os import environ, pathsep
   from os.path import abspath
   from sys import path
   environ['BIGDFT_ROOT'] = abspath(bigdft_root_path)
-  path.insert(0, abspath(bigdft_pythonpath))
+  ppath = abspath(bigdft_pythonpath)) 
+  if ppath not in path:
+      path.insert(0, ppath)
+  environ['PYTHONPATH'] = pathsep.join(path)
 
 def skip():
    from os.path import isfile
@@ -67,9 +74,13 @@ def ok_for_client():
     from os.path import isdir
     return isdir(bigdft_pythonpath)
 
-def untar_bz2(archive,dest='install'):
-    execute('mkdir','-p',dest)
-    execute('tar','xjf',archive,'-C',dest)
+def untar_archive(archive, dest='install'):
+    ensure_dir(dest)
+    options={'.tar.gz': 'xf','.tgz': 'xf', '.tar.bz2':'xjf'}
+    for opt, option in options.items():
+        if archive.endswith(opt):
+            break
+    execute('tar', option, archive, '-C', dest)
 
 def install_colab():
     packages('condacolab',path=None,options=['-q'])
@@ -122,6 +133,9 @@ def packages(*args,path=bigdft_pythonpath,options=[]):
       execute('pip','install','-t',path,*options,*args)
     else:
       execute('pip','install',*options,*args)
+
+def data(archive):
+    untar_archive(archive)
 
 def full_procedure():
   mount_drive()
