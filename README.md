@@ -1,4 +1,12 @@
-# bigdft-school
+# BigDFT School project.
+
+This project contans the material for training about BigDFT code which could be execute via Google colab.
+There are multiple ways to run these notebooks. You have to open a google colab session and Start by the Installation tutorial.
+
+It is also possible to open this project from a GitHub fork. To do this it would be enough to open one of the notebooks in the github page of 
+your fork and replace `github.com` with `githubtocolab.com` in the url page. With this technique it would be possible to push your notebooks into a suitable branch of the github fork.
+
+# Program of CCP-BioSym Training Day on BigDFT code
 
 Morning session: 9h
 
