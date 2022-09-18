@@ -61,7 +61,7 @@ def set_environment():
   from os.path import abspath
   from sys import path
   environ['BIGDFT_ROOT'] = abspath(bigdft_root_path)
-  ppath = abspath(bigdft_pythonpath)) 
+  ppath = abspath(bigdft_pythonpath) 
   if ppath not in path:
       path.insert(0, ppath)
   environ['PYTHONPATH'] = pathsep.join(path)
@@ -136,6 +136,10 @@ def packages(*args,path=bigdft_pythonpath,options=[]):
 
 def data(archive):
     untar_archive(archive)
+
+def purge_drive():
+    from os.path import join
+    execute('rm','-rf',join(drive_path,'MyDrive',training_path))
 
 def full_procedure():
   mount_drive()
