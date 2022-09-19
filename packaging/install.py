@@ -135,8 +135,8 @@ def packages(*args,path=bigdft_pythonpath,options=[]):
     else:
       execute('pip','install',*options,*args)
 
-def data(archive):
-    untar_archive(archive)
+def data(archive,dest='.'):
+    untar_archive(archive,dest=dest)
 
 def purge_drive():
     from os.path import join
