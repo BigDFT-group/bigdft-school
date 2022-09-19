@@ -119,9 +119,10 @@ def client(locally=False):
        mount_drive()
     change_dir(base)
     get_school_repo()
-    get_repo(url=trunk_url,options=['-b', '1.9.3-new'])
-    environ['JHBUILD_RUN_AS_ROOT']='please do it'
-    execute('python','bigdft-suite/Installer.py','-f','ubuntu_MPI.rc','-a','no_upstream','build','bigdft-client','-y')
+    if not ok_for_client():
+        get_repo(url=trunk_url,options=['-b', '1.9.3-new'])
+        environ['JHBUILD_RUN_AS_ROOT']='please do it'
+        execute('python','bigdft-suite/Installer.py','-f','ubuntu_MPI.rc','-a','no_upstream','build','bigdft-client','-y')
     set_environment()
 
 def get_school_repo():
