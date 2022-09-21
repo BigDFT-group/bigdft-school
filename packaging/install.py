@@ -110,7 +110,7 @@ def client(locally=False):
     if not ok_for_client():
         get_repo(url=trunk_url,options=['-b', school_branch])
         environ['JHBUILD_RUN_AS_ROOT']='please do it'
-        execute('python','bigdft-suite/Installer.py','-f','ubuntu_MPI.rc','-a','no_upstream','build','bigdft-client','-y','-q')
+        execute('python','bigdft-suite/Installer.py','-f','ubuntu_MPI.rc','-a','no_upstream','build','bigdft-client','-q','-y')
         shutil.copyfileobj(r.raw, f)
     set_environment()
 
