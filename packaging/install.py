@@ -2,7 +2,7 @@ from os.path import join
 from os import sep
 school_url = 'https://github.com/BigDFT-group/bigdft-school'
 trunk_url =  'https://gitlab.com/luigigenovese/bigdft-suite.git'
-data_url = 'https://gitlab.com/luigigenovese/bigdft-school'
+data_url = 'https://gitlab.com/luigigenovese/bigdft-school/-/raw/main/'
 school_branch = '1.9.3-new'
 base_path = join(sep,'content')
 drive_path = join(base_path, 'drive')
@@ -110,12 +110,15 @@ def client(locally=False):
     if not ok_for_client():
         get_repo(url=trunk_url,options=['-b', school_branch])
         environ['JHBUILD_RUN_AS_ROOT']='please do it'
-        execute('python','bigdft-suite/Installer.py','-f','ubuntu_MPI.rc','-a','no_upstream','build','bigdft-client','-y')
+        execute('python','bigdft-suite/Installer.py','-f','ubuntu_MPI.rc','-a','no_upstream','build','bigdft-client','-y -q')
     set_environment()
 
 def get_school_repo():
     get_repo()
     change_dir(training_path)
+
+def get_remote_file(path, output):
+    execute('wget',data_url+path,'-O',output)
 
 def packages(*args,path=bigdft_pythonpath,options=[]):
     if path is not None:
@@ -124,6 +127,7 @@ def packages(*args,path=bigdft_pythonpath,options=[]):
       execute('pip','install',*options,*args)
 
 def data(archive,dest='.'):
+    get_remote_file(archive)
     untar_archive(archive,dest=dest)
 
 def purge_drive():
