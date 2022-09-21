@@ -64,7 +64,10 @@ def ok_for_client():
 
 def untar_archive(archive, dest='install'):
     ensure_dir(dest)
-    options={'.tar.gz': 'xf','.tgz': 'xf', '.tar.bz2':'xjf'}
+    options={'.tar.gz': 'xf',
+             '.tgz': 'xf', 
+             '.tar.bz2':'xjf',
+             '.tar.xz': 'xJf'}
     for opt, option in options.items():
         if archive.endswith(opt):
             break
