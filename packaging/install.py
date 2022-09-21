@@ -133,6 +133,7 @@ def data(archive,dest='.'):
 
 def purge_drive():
     from os.path import join
+    change_dir(base_path)
     execute('rm','-rf',join(drive_path,'MyDrive',training_path))
 
 
