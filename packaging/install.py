@@ -127,7 +127,8 @@ def packages(*args,path=bigdft_pythonpath,options=[]):
       execute('pip','install',*options,*args)
 
 def data(archive,dest='.'):
-    get_remote_file(archive)
+    from os.path import basename
+    get_remote_file(archive,baename(archive))
     untar_archive(archive,dest=dest)
 
 def purge_drive():
