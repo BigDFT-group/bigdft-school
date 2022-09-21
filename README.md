@@ -7,7 +7,7 @@ To do that:
 
  1. Go here with your google account: https://colab.research.google.com/
  2. File-> Open Notebook - > GitHub
- 3. `luigigenovese/bigdft-school`
+ 3. `BigDFT-group/bigdft-school`
  4. Start from the Notebook `0.Installation.ipynb`
 
 It is also possible to open this project from a GitHub fork. To do this it would be enough to open one of the notebooks in the github page of 
