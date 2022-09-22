@@ -33,25 +33,25 @@ Linear Scaling and Complexity Reduction Talks
 * 2.A.InitialRunsLinear
 * 2.B.LinearScaling
 
-Lunch: 12h30 - 14h
+Lunch: 12h30 - 13h30
 
-14h-14h30
+13h30-14h00
 * 2.C.ComplexityReduction 
 
-14:30h – 14:50h
+14h – 14h20
 Implicit Solvent (Poisson Solver) talk
 
-14h50-15h15
+14h20-14h55
 * 3.A.ImplicitSolvent
 
-15:15-15:45 
+14h55-15h25 
 Extensions to LS : Fragments and T-CDFT
 
-15h45-16h45
+15h25-16h15
 * 4.A.MolecularFragments
 * 4.B.EmbeddedFragments
 * 4.C.TCDFTNaphthalene
 
-16h45-17h00
+16h15-16h30
 Concluding remarks 
 
