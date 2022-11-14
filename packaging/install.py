@@ -97,7 +97,7 @@ def setup_colab():
 
 
 def install_bigdft():
-    execute("conda", "install", 'conda-forge', 'bigdft-suite')
+    execute("conda", "install", conda_package)
     execute("conda", "update", "--all")
 
 
