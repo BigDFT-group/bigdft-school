@@ -1,0 +1,21 @@
+  #---------------------------------------------------------------------- Minimal input file
+  #This file indicates the minimal set of input variables which has to be given to perform 
+  #the run. The code would produce the same output if this file is used as input.
+ dft:
+   hgrids: 0.4
+   ixc: PBE
+ perf:
+   calculate_forces: false
+ posinp:
+   cell: [.inf, .inf, .inf]
+   positions:
+   - H: [0.0, 0.0, 0.0]
+     frag: [H2, 1]
+   - H: [0.0, 0.0, 0.740848095288]
+     frag: [H2, 1]
+   - He: [5.2917721092, 0.0, 0.0]
+     frag: [He, 2]
+   units: angstroem
+   properties:
+     format: yaml
+     source: quick.yaml

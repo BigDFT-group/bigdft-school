@@ -1,0 +1,15 @@
+---
+ units: angstroem
+ abc:
+ -  [2.867, 0.0, 0.0]
+ -  [0.0, 2.867, 0.0]
+ -  [0.0, 0.0, 2.867]
+ cell: [ 2.867,  2.867,  2.867]
+ positions:
+ - Fe: [0.0, 0.0, 0.0]
+   frag: [CEL, 0]
+ properties:
+   format: yaml
+   source: psys.yaml
+   info:
+   - Geometry + metaData forces
