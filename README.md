@@ -13,7 +13,7 @@ To do that:
 **Alternative method (for colab experts):** It is also possible to open this project from a GitHub fork. To do this it would be enough to open one of the notebooks in the github page of 
 your fork and replace `github.com` with `githubtocolab.com` in the url page. With this technique it would be possible to push your notebooks into a suitable branch of the github fork.
 
-# Program of CCP-BioSym Training Day on BigDFT code
+# Program of CCP-BioSim Training Day on BigDFT code
 
 Morning session: 9h
 
