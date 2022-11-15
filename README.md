@@ -13,43 +13,45 @@ To do that:
 **Alternative method (for colab experts):** It is also possible to open this project from a GitHub fork. To do this it would be enough to open one of the notebooks in the github page of 
 your fork and replace `github.com` with `githubtocolab.com` in the url page. With this technique it would be possible to push your notebooks into a suitable branch of the github fork.
 
-# Program of CCP-BioSym Training Day on BigDFT code
+# Program of CCP-BioSim Training Day on BigDFT code
 
 Morning session: 9h
 
-LG 9h-9:30h introduction (wavelets, DFT, what you can do with BigDFT) Talk 
+9h-9:30h introduction (wavelets, DFT, what you can do with BigDFT) Talk 
 
-Set up of the training: 1h30 – SD LG,LR,MS
-* code installation (Colab – 5min → manual before)
-* System Manipulation 20 min
-* Calculations of N2 molecule 40 min
-* Logfile analysis 20 min
-* Other excercises (if time allows)
+9h30-11h Set up of the training
+* 0.Installation 
+* 1.A.Systems
+* 1.B.Calculations
+* 1.C.Logfiles
+* Other exercises (if time allows)
 
-11h-11:30
-Linear Scaling (LR) and Complexity Reduction Talks (WD)
+11h-11h30
+Linear Scaling and Complexity Reduction Talks
 
-30min  LR LG MS WD
-* Quick start linear
-* Rloc adjustement notebook
+11h30-12h30
+* 2.A.InitialRunsLinear
+* 2.B.LinearScaling
 
-14h 15-30 min WD 
-* complexity reduction 
+Lunch: 12h30 - 13h30
 
-14:30h – 14:50h GF
+13h30-14h00
+* 2.C.ComplexityReduction 
+
+14h – 14h20
 Implicit Solvent (Poisson Solver) talk
 
-20 min GF – LG LR MS
-* Implicit solvent calculations
+14h20-14h55
+* 3.A.ImplicitSolvent
 
-15:15-15:45 MS LR
+14h55-15h25 
 Extensions to LS : Fragments and T-CDFT
 
-1h LR MS LG
-* fragment nb (molecular)
-* fragment nb (extended)
-* T-CDFT nb
+15h25-16h15
+* 4.A.MolecularFragments
+* 4.B.EmbeddedFragments
+* 4.C.TCDFTNaphthalene
 
-16:45-17:00
-Concluding remarks LG
+16h15-16h30
+Concluding remarks 
 
