@@ -21,7 +21,6 @@ pip install pybigdft pyfutile py3dmol remotemanager
 ``
 
 In case you do not have a jupyter notebook environment installed on your workstation, you can issue the command:
-# Program of ENCCS Training half-day on BigDFT in HPC (directory Enccs_tutorials)
 
 ``
 pip install jupyterlab py3dmol seaborn
