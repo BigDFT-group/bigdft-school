@@ -20,16 +20,24 @@ The installation can be performed by running the command
 pip install pybigdft pyfutile py3dmol remotemanager
 ``
 
+In case you do not have a jupyter notebook environment installed on your workstation, you can issue the command:
+
+``
+pip install jupyterlab py3dmol seaborn
+``
+
+The notebook can also run on a colab session, with the run data imported.
+
 # Program of ENCCS Training half-day on BigDFT in HPC (directory Enccs_tutorials)
 
 |  Time       | Section | 
 | ---- | ----- | 
 |09:00-09:30 | Introduction to BigDFT (Presentation - Luigi Genovese & Laura Ratcliff)|
-|09:30-10:00 | Introduction to PyBigDFT: System Manipulation (Walkthrough - Martina Stella)|
-|10:00-10:30 | Remote Runner (Presentation & Walkthrough/Hands On - Louis Beal)|
+|09:30-10:00 | Introduction to PyBigDFT: Notebook 1. System Manipulation (Walkthrough - Martina Stella)|
+|10:00-10:30 | Remote Runner (Presentation & Walkthrough/Hands On - NB 2. - Louis Beal)|
 |10:30 - 11:00 | Coffee break|
-|11:00 - 12:00 | Cubic Scaling BigDFT (Hands On - Luigi Genovese)|
-|12:00 - 13:00 | Linear Scaling BigDFT (Hands On - Laura Ratcliff)|
+|11:00 - 12:00 | Cubic Scaling BigDFT (Hands On (NB 3.) - Luigi Genovese)|
+|12:00 - 13:00 | Linear Scaling BigDFT (Hands On (NB 4.) - Laura Ratcliff)|
 
 
 
