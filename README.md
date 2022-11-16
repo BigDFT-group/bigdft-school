@@ -8,12 +8,32 @@ To do that:
  1. Go here with your google account: https://colab.research.google.com/
  2. File-> Open Notebook - > GitHub
  3. `BigDFT-group/bigdft-school`
- 4. Start from the Notebook `0.Installation.ipynb`
+ 4. Start from the first Notebook of the chosen directory.
 
 **Alternative method (for colab experts):** It is also possible to open this project from a GitHub fork. To do this it would be enough to open one of the notebooks in the github page of 
 your fork and replace `github.com` with `githubtocolab.com` in the url page. With this technique it would be possible to push your notebooks into a suitable branch of the github fork.
 
-# Program of CCP-BioSim Training Day on BigDFT code
+Such notebooks can also be executed on a local workstation with the bigdft-client installed.
+The installation can be performed by running the command
+
+``
+pip install pybigdft pyfutile py3dmol remotemanager
+``
+
+# Program of ENCCS Training half-day on BigDFT in HPC (directory Enccs_tutorials)
+
+|  Time       | Section | 
+| ---- | ----- | 
+|09:00-09:30 | Introduction to BigDFT (Presentation - Luigi Genovese & Laura Ratcliff)|
+|09:30-10:00 | Introduction to PyBigDFT: System Manipulation (Walkthrough - Martina Stella)|
+|10:00-10:30 | Remote Runner (Presentation & Walkthrough/Hands On - Louis Beal)|
+|10:30 - 11:00 | Coffee break|
+|11:00 - 12:00 | Cubic Scaling BigDFT (Hands On - Luigi Genovese)|
+|12:00 - 13:00 | Linear Scaling BigDFT (Hands On - Laura Ratcliff)|
+
+
+
+# Program of CCP-BioSim Training Day on BigDFT code (directory CCP_tutorials)
 
 Morning session: 9h
 
