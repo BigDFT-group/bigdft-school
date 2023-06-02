@@ -1,3 +1,6 @@
+# NMQC Tutorial on BigDFT
+
+You can run the notebooks for this tutorial on google colab by following the links below:
 * [01-Quick Start](https://colab.research.google.com/github/BigDFT-group/bigdft-school/blob/main/nmqc-2023/01-QuickStart.ipynb)
 * [02-N2](https://colab.research.google.com/github/BigDFT-group/bigdft-school/blob/main/nmqc-2023/02-N2.ipynb)
 * [03-Basis Set Convergence](https://colab.research.google.com/github/BigDFT-group/bigdft-school/blob/main/nmqc-2023/03-BasisSetConvergence.ipynb)
