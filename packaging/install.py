@@ -135,7 +135,9 @@ def client(locally=False):
         pip_path=join(base,bigdft_pythonpath)
         path.insert(0,pip_path)
     change_dir(base)
-    get_school_repo()
+    if not locally:
+        get_repo()
+    change_dir(training_path)
     if not ok_for_client(pip_path):
         packages('pybigdft','py3dmol', 'ase', 'spglib',
                  path=pip_path, options=['-q'])
