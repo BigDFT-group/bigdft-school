@@ -28,6 +28,25 @@ pip install jupyterlab py3dmol seaborn
 
 The notebook can also run on a colab session, with the run data imported.
 
+Here follow the programs of the Schools that can have been done with this material
+
+# Program of BigDFT training of Winter School in Computational Chemistry (2024)
+
+45 Min: Introduction and presentation of BigDFT formalism
+
+15 Min: Presentation of Coogle Colab and dry-run approach Quick Start - Initial Walkthrough
+
+45 Min ("Slow-Motion" walkthrough) Basic Tutorials - 1.A.B.C.G.H.(J) 
+(https://github.com/BigDFT-group/bigdft-school/tree/main/CCP_tutorials) - Ex. Replacement of 1.B with the anthracene dimer
+Sam
+
+30 Min Towards Large Scale calculations - Linear Scaling algorthm - Complexity Reduction - Fragments  -  Application WD
+
+30 Min 2.A.B.C WD 4A - LG 
+
+15 min Closing Remarks (Features + tutorials)  (remotemanager - Implicit Solvents - TCDFT)  - LG
+
+
 # Program of ENCCS Training half-day on BigDFT in HPC (directory Enccs_tutorials)
 
 |  Time       | Section | 
