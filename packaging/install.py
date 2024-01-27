@@ -205,4 +205,4 @@ def data_archive(archive, dest='.'):
         href_d=load(jfile)
     url=href_d['objects'][0]['actions']['download']['href']
     execute('wget', url, '-O', path.basename(archive))
-    untar_archive(basename(archive), dest=dest)
+    untar_archive(path.basename(archive), dest=dest)
