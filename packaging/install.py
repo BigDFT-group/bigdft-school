@@ -137,8 +137,8 @@ def client(locally=False):
     change_dir(base)
     get_school_repo()
     if not ok_for_client(pip_path):
-        packages('pybigdft py3dmol ase spglib',
-                 path=pip_path, options=['-q'])
+        packages('pybigdft py3dmol ase spglib -q',
+                 path=pip_path)
         #get_repo(url=trunk_url, options=['-b', school_branch])
         #environ['JHBUILD_RUN_AS_ROOT'] = 'please do it'
         #execute('python', 'bigdft-suite/Installer.py', '-f',
