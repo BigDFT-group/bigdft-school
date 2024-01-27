@@ -1,2 +1,16 @@
 data/tcdft_data.tar.gz filter=lfs diff=lfs merge=lfs -text
 data/tcdft*gz filter=lfs diff=lfs merge=lfs -text
+data/carbon_chain.tar.gz filter=lfs diff=lfs merge=lfs -text
+data/cr2_data.tar.gz filter=lfs diff=lfs merge=lfs -text
+data/H2O-CS.tar.xz filter=lfs diff=lfs merge=lfs -text
+data/anthracene_dimer.tar.gz filter=lfs diff=lfs merge=lfs -text
+data/linear-quick.tar.gz filter=lfs diff=lfs merge=lfs -text
+data/solvent.tar.xz filter=lfs diff=lfs merge=lfs -text
+data/1UAO.tar.bz2 filter=lfs diff=lfs merge=lfs -text
+data/logfile.tar.gz filter=lfs diff=lfs merge=lfs -text
+data/N2.tar.gz filter=lfs diff=lfs merge=lfs -text
+data/tcdft_data.tar.xz filter=lfs diff=lfs merge=lfs -text
+data/H2O-LS.tar.xz filter=lfs diff=lfs merge=lfs -text
+data/ls_data.tar.gz filter=lfs diff=lfs merge=lfs -text
+data/session1.tar.xz filter=lfs diff=lfs merge=lfs -text
+data/Enccs_basics.tar.xz filter=lfs diff=lfs merge=lfs -text
