@@ -199,10 +199,10 @@ def data_archive(archive, dest='.'):
     from os import system, path
     from json import load
     lfs='lfs.info'
-    install.execute('wget', path.join(install.data_url,archive), '-O', lfs)
-    system(" ".join(get_curl_command(*get_sha_and_size(lfs),install.school_url)))
+    execute('wget', path.join(data_url,archive), '-O', lfs)
+    system(" ".join(get_curl_command(*get_sha_and_size(lfs),school_url)))
     with open('href.json') as jfile:
         href_d=load(jfile)
     url=href_d['objects'][0]['actions']['download']['href']
-    install.execute('wget', url, '-O', path.basename(archive))
+    execute('wget', url, '-O', path.basename(archive))
     untar_archive(basename(archive), dest=dest)
