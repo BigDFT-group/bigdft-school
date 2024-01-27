@@ -144,7 +144,7 @@ def get_school_repo():
 
 
 def get_remote_file(path, output):
-    execute('wget', data_url + path, '-O', output)
+    execute('wget', data_url + path, '-O', output, '2>/dev/null')
 
 
 def packages(*args, path=bigdft_pythonpath, options=[]):
