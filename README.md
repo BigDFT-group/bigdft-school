@@ -36,15 +36,16 @@ Here follow the programs of the Schools that can have been done with this materi
 
 15 Min: Presentation of Coogle Colab and dry-run approach Quick Start - Initial Walkthrough
 
-45 Min ("Slow-Motion" walkthrough) Basic Tutorials - 1.A.B.C.G.H.(J) 
-(https://github.com/BigDFT-group/bigdft-school/tree/main/CCP_tutorials) - Ex. Replacement of 1.B with the anthracene dimer
+45 Min ("Slow-Motion" Colab walkthrough) Basic Tutorials - 1.x
 Sam
 
-30 Min Towards Large Scale calculations - Linear Scaling algorthm - Complexity Reduction - Fragments  -  Application WD
+30 Min Towards Large Scale calculations - Linear Scaling algorthm - Complexity Reduction - Fragments
 
-30 Min 2.A.B.C WD 4A - LG 
+30 Min Linear Scaling Tutorials
 
-15 min Closing Remarks (Features + tutorials)  (remotemanager - Implicit Solvents - TCDFT)  - LG
+15 min Closing Remarks (Features + tutorials)  (Implicit Solvents)
+
+[School tutorials](CCWinterSchool-2024/README.md)
 
 
 # Program of ENCCS Training half-day on BigDFT in HPC (directory Enccs_tutorials)
