@@ -32,18 +32,18 @@ Here follow the programs of the Schools that can have been done with this materi
 
 # Program of BigDFT training of Winter School in Computational Chemistry (2024)
 
-45 Min: Introduction and presentation of BigDFT formalism
+45 Min: Introduction and presentation of BigDFT formalism (Luigi Genovese - L_Sim - CEA Grenoble)
 
 15 Min: Presentation of Coogle Colab and dry-run approach Quick Start - Initial Walkthrough
 
 45 Min ("Slow-Motion" Colab walkthrough) Basic Tutorials - 1.x
-Sam
+ (Samuel Dechamps - L_Sim - CEA Grenoble)
 
-30 Min Towards Large Scale calculations - Linear Scaling algorthm - Complexity Reduction - Fragments
+30 Min Towards Large Scale calculations - Linear Scaling algorthm - Complexity Reduction - Fragments (William Dawson - CCS - RIKEN)
 
-30 Min Linear Scaling Tutorials
+30 Min Linear Scaling Tutorials 
 
-15 min Closing Remarks (Features + tutorials)  (Implicit Solvents)
+15 min Closing Remarks (LG)
 
 [School tutorials](CCWinterSchool-2024/README.md)
 
