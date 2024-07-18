@@ -1,0 +1,2600 @@
+---
+ Code logo:
+   "__________________________________ A fast and precise DFT wavelet code
+   |     |     |     |     |     |
+   |     |     |     |     |     |      BBBB         i       gggggg
+   |_____|_____|_____|_____|_____|     B    B               g
+   |     |  :  |  :  |     |     |    B     B        i     g
+   |     |-0+--|-0+--|     |     |    B    B         i     g        g
+   |_____|__:__|__:__|_____|_____|___ BBBBB          i     g         g
+   |  :  |     |     |  :  |     |    B    B         i     g         g
+   |--+0-|     |     |-0+--|     |    B     B     iiii     g         g
+   |__:__|_____|_____|__:__|_____|    B     B        i      g        g
+   |     |  :  |  :  |     |     |    B BBBB        i        g      g
+   |     |-0+--|-0+--|     |     |    B        iiiii          gggggg
+   |_____|__:__|__:__|_____|_____|__BBBBB
+   |     |     |     |  :  |     |                           TTTTTTTTT
+   |     |     |     |--+0-|     |  DDDDDD          FFFFF        T
+   |_____|_____|_____|__:__|_____| D      D        F        TTTT T
+   |     |     |     |  :  |     |D        D      F        T     T
+   |     |     |     |--+0-|     |D         D     FFFF     T     T
+   |_____|_____|_____|__:__|_____|D___      D     F         T    T
+   |     |     |  :  |     |     |D         D     F          TTTTT
+   |     |     |--+0-|     |     | D        D     F         T    T
+   |_____|_____|__:__|_____|_____|          D     F        T     T
+   |     |     |     |     |     |         D               T    T
+   |     |     |     |     |     |   DDDDDD       F         TTTT
+   |_____|_____|_____|_____|_____|______                    www.bigdft.org   "
+
+ Reference Paper                       : The Journal of Chemical Physics 129, 014109 (2008)
+ Version Number                        : 1.9.3
+ Timestamp of this run                 : 2022-09-21 11:17:55.071
+ Root process Hostname                 : IT084337
+ Number of MPI tasks                   :  2
+ OpenMP parallelization                :  Yes
+ Maximal OpenMP threads per MPI task   :  2
+ MPI tasks of root process node        :  2
+  #------------------------------------------------------------------ Code compiling options
+ Compilation options:
+   Configure arguments:
+     " '--prefix' '/home/ff21106/bigdft-suite/Build/install' '--disable-Werror' 
+     '--enable-ntpoly' 'FC=mpif90' 'FCFLAGS=-O2 -fopenmp -g -fPIC' 
+     'LDFLAGS=-L/home/ff21106/bigdft-suite/Build/install/lib ' 
+     'C_INCLUDE_PATH=/home/ff21106/bigdft-suite/Build/install/include' 
+     'PKG_CONFIG_PATH=/home/ff21106/bigdft-suite/Build/install/lib/pkgconfig:/home/ff21106/bi
+     gdft-suite/Build/install/share/pkgconfig:/usr/lib/x86_64-linux-gnu/pkgconfig:/usr/lib/pk
+     gconfig:/usr/share/pkgconfig'"
+   Compilers (CC, FC, CXX)             :  [ gcc, mpif90, g++ ]
+   Compiler flags:
+     CFLAGS                            : -g -O2
+     FCFLAGS                           : -O2 -fopenmp -g -fPIC
+     CXXFLAGS                          : -g -O2
+  #------------------------------------------------------------------------ Input parameters
+ radical                               : glycine1_cubic_dos
+ outdir                                : ./
+ logfile                               : Yes
+ run_from_files                        : Yes
+ skip                                  : Yes
+ dft:
+   hgrids                              : 0.5 #    Grid spacing in the three directions (bohr)
+   itermax_virt                        : 150 #    Max. iterations of wfn. opt. steps for virtual orbitals
+   ixc                                 : -101130 # Exchange-correlation parameter (LDA=1,PBE=11)
+   norbv                               : 20 #     Davidson subspace dimension (No. virtual orbitals)
+   nvirt                               : 10 #     No. of converged virtual orbs (< norbv)
+   disablesym                          : Yes #    Disable the symmetry detection
+   ngrids: [0, 0, 0] #                            Number of grid spacing division in each direction
+   rmult: [5., 8.] #                              c(f)rmult*radii_cf(:,1(2))=coarse(fine) atom-based radius
+   qcharge                             : 0 #      Charge of the system. Can be integer or real.
+   elecfield: [0., 0., 0.] #                      Electric field (Ex,Ey,Ez)
+   nspin                               : 1 #      Spin polarization treatment
+   mpol                                : 0 #      Total magnetic moment
+   gnrm_cv                             : 1.e-4 #  Convergence criterion gradient
+   itermax                             : 50 #     Max. iterations of wfn. opt. steps
+   itermin                             : 0 #      Minimal iterations of wfn. optimized steps
+   nrepmax                             : 1 #      Max. number of re-diag. runs
+   ncong                               : 6 #      No. of CG it. for preconditioning eq.
+   idsx                                : 6 #      Wfn. diis history
+   dispersion                          : 0 #      Dispersion correction potential (values 1,2,3,4,5), 0=none
+   inputpsiid                          : 0 #      Input guess wavefunctions
+   projection                          : gaussian # Projector construction method
+   output_denspot                      : 0 #      Output of the density or the potential
+   rbuf                                : 0. #     Length of the tail (AU)
+   ncongt                              : 30 #     No. of tail CG iterations
+   nplot                               : 0 #      No. of plotted orbs
+   gnrm_cv_virt                        : 1.e-4 #  Convergence criterion gradient for virtual orbitals
+   external_potential                  : 0.0 #    Multipole moments of an external potential
+   calculate_strten                    : Yes #    Boolean to activate the calculation of the stress tensor. Might be set to No for 
+    #                                              performance reasons
+   plot_mppot_axes: [-1, -1, -1] #                Plot the potential generated by the multipoles along axes through this 
+    #                                              point. Negative values mean no plot.
+   plot_pot_axes: [-1, -1, -1] #                  Plot the potential along axes through this point. Negative values mean 
+    #                                              no plot.
+   occupancy_control                   : None #   Dictionary of the atomic matrices to be applied for a given iteration number
+   itermax_occ_ctrl                    : 0 #      Number of iterations of occupancy control scheme. Should be between itermin and 
+    #                                              itermax
+   nrepmax_occ_ctrl                    : 1 #      Number of re-diagonalizations of occupancy control scheme.
+   alpha_hf                            : -1.0 #   Part of the exact exchange contribution for hybrid functionals
+ psppar.Ag:
+   Atomic number                       : 47
+   Local Pseudo Potential (HGH convention):
+     Coefficients (c1 .. c4): [18.65989312101, -1.6526908042429, 0.0, 0.0]
+     Rloc                              : 0.4786959435072
+   No. of Electrons                    : 19
+   Non Linear Core Correction term:
+     Core charge                       : 284.6267178971318
+     Rcore                             : 0.338038284313861
+   NonLocal PSP Parameters:
+   - Channel (l)                       : 0
+     Rloc                              : 0.37907204284134
+     h_ij terms: [1.04195894036343, -2.20467314333653, 0.0, -1.179049067250043, 0.0, 0.0]
+   - Channel (l)                       : 1
+     Rloc                              : 0.359380735212558
+     h_ij terms: [-5.6821456196664, -2.649103129338902, 0.0, 1.52728990125, 0.0, 0.0]
+   - Channel (l)                       : 2
+     Rloc                              : 0.35017005912661
+     h_ij terms: [-6.0955530003927, 0.0, 0.0, 0.0, 0.0, 0.0]
+   PAW patch                           : false
+   Pseudopotential XC                  : -101130
+   Pseudopotential type                : HGH-K + NLCC
+   Radii of active regions (AU):
+     Coarse                            : 1.782267883823827
+     Coarse PSP                        : 0.7107600803275125
+     Fine                              : 0.35017005912661
+   Source                              : generated by Saha,2015
+ psppar.Al:
+   Atomic number                       : 13
+   Local Pseudo Potential (HGH convention):
+     Coefficients (c1 .. c4): [-5.18802089974, 0.6961574711, 0.0, 0.0]
+     Rloc                              : 0.60224003597
+   No. of Electrons                    : 3
+   Non Linear Core Correction term:
+     Core charge                       : 35.88748558275994
+     Rcore                             : 0.4302905414
+   NonLocal PSP Parameters:
+   - Channel (l)                       : 0
+     Rloc                              : 0.451219678
+     h_ij terms: [6.17502916918, 3.6822889039, 0.0, -1.91493592966, 0.0, 0.0]
+   - Channel (l)                       : 1
+     Rloc                              : 0.53746997212
+     h_ij terms: [2.272958057, 0.0, 0.0, 0.0, 0.0, 0.0]
+   PAW patch                           : false
+   Pseudopotential XC                  : -101130
+   Pseudopotential type                : HGH-K + NLCC
+   Radii of active regions (AU):
+     Coarse                            : 2.208145859740855
+     Coarse PSP                        : 1.007756197725
+     Fine                              : 0.451219678
+   Source                              : generated by Saha,2015
+ psppar.B:
+   Atomic number                       : 5
+   Local Pseudo Potential (HGH convention):
+     Coefficients (c1 .. c4): [-3.21499977665, 0.49383234, 0.0, 0.0]
+     Rloc                              : 0.4959330986
+   No. of Electrons                    : 3
+   Non Linear Core Correction term:
+     Core charge                       : 14.57801316379443
+     Rcore                             : 0.4405899976293
+   NonLocal PSP Parameters:
+   - Channel (l)                       : 0
+     Rloc                              : 0.515297008
+     h_ij terms: [6.776884155334, 0.573090148544, 0.0, -1.9530162728204, 0.0, 0.0]
+   PAW patch                           : false
+   Pseudopotential XC                  : -101130
+   Pseudopotential type                : HGH-K + NLCC
+   Radii of active regions (AU):
+     Coarse                            : 1.913175821079533
+     Coarse PSP                        : 0.96618189
+     Fine                              : 0.4959330986
+   Source                              : generated by Saha,2015
+ psppar.Be:
+   Atomic number                       : 4
+   Local Pseudo Potential (HGH convention):
+     Coefficients (c1 .. c4): [-1.8463852202, 0.260547718436, 0.0, 0.0]
+     Rloc                              : 0.71999999
+   No. of Electrons                    : 2
+   Non Linear Core Correction term:
+     Core charge                       : 19.3227112468744
+     Rcore                             : 0.3239368548
+   NonLocal PSP Parameters:
+   - Channel (l)                       : 0
+     Rloc                              : 0.49587651444
+     h_ij terms: [3.3457892807564, 0.0, 0.0, 0.0, 0.0, 0.0]
+   PAW patch                           : false
+   Pseudopotential XC                  : -101130
+   Pseudopotential type                : HGH-K + NLCC
+   Radii of active regions (AU):
+     Coarse                            : 1.558911327180898
+     Coarse PSP                        : 0.9297684645750001
+     Fine                              : 0.49587651444
+   Source                              : generated by Saha,2015
+ psppar.C:
+   Atomic number                       : 6
+   Local Pseudo Potential (HGH convention):
+     Coefficients (c1 .. c4): [-5.729305064, 0.874750285642, 0.0, 0.0]
+     Rloc                              : 0.41329225352
+   No. of Electrons                    : 4
+   Non Linear Core Correction term:
+     Core charge                       : 20.30288259355162
+     Rcore                             : 0.362404633914
+   NonLocal PSP Parameters:
+   - Channel (l)                       : 0
+     Rloc                              : 0.4341053017
+     h_ij terms: [9.01955484658, 0.554729349186, 0.0, -2.4185793675, 0.0, 0.0]
+   PAW patch                           : false
+   Pseudopotential XC                  : -101130
+   Pseudopotential type                : HGH-K + NLCC
+   Radii of active regions (AU):
+     Coarse                            : 1.584366302812153
+     Coarse PSP                        : 0.8139474406875
+     Fine                              : 0.41329225352
+     Source                            : PSP File
+   Source                              : generated by Saha,2015
+ psppar.Ca:
+   Atomic number                       : 20
+   Local Pseudo Potential (HGH convention):
+     Coefficients (c1 .. c4): [17.618945107, -2.432132707544, 0.0, 0.0]
+     Rloc                              : 0.5919999999
+   No. of Electrons                    : 10
+   Non Linear Core Correction term:
+     Core charge                       : 72.6705862172717
+     Rcore                             : 0.3717831008
+   NonLocal PSP Parameters:
+   - Channel (l)                       : 0
+     Rloc                              : 0.4129999999
+     h_ij terms: [-3.1060887, -2.65139730314322, 0.0, -0.25644056323, 0.0, 0.0]
+   - Channel (l)                       : 1
+     Rloc                              : 0.3604999999
+     h_ij terms: [-3.77293533844, -4.82046203500343, 0.0, 0.689599958832, 0.0, 0.0]
+   - Channel (l)                       : 2
+     Rloc                              : 0.349999999
+     h_ij terms: [-10.9647778919, 0.0, 0.0, 0.0, 0.0, 0.0]
+   PAW patch                           : false
+   Pseudopotential XC                  : -101130
+   Pseudopotential type                : HGH-K + NLCC
+   Radii of active regions (AU):
+     Coarse                            : 1.880370397242643
+     Coarse PSP                        : 0.7743749998125
+     Fine                              : 0.349999999
+   Source                              : generated by Saha,2015
+ psppar.Cd:
+   Atomic number                       : 48
+   Local Pseudo Potential (HGH convention):
+     Coefficients (c1 .. c4): [16.8774099009945, -1.121950841825, 0.0, 0.0]
+     Rloc                              : 0.48127577613853
+   No. of Electrons                    : 20
+   Non Linear Core Correction term:
+     Core charge                       : 271.5401782482117
+     Rcore                             : 0.3427528256281
+   NonLocal PSP Parameters:
+   - Channel (l)                       : 0
+     Rloc                              : 0.383994821673
+     h_ij terms: [0.05169077631961, -1.61648552077959, 0.0, -1.392585006449, 0.0, 0.0]
+   - Channel (l)                       : 1
+     Rloc                              : 0.3636397513293
+     h_ij terms: [-5.708837531785, -1.216854266577, 0.0, 0.4968315395441, 0.0, 0.0]
+   - Channel (l)                       : 2
+     Rloc                              : 0.353460817951451
+     h_ij terms: [-6.43121863834666, 0.0, 0.0, 0.0, 0.0, 0.0]
+   PAW patch                           : false
+   Pseudopotential XC                  : -101130
+   Pseudopotential type                : HGH-K + NLCC
+   Radii of active regions (AU):
+     Coarse                            : 1.564686588207883
+     Coarse PSP                        : 0.7199902906368749
+     Fine                              : 0.353460817951451
+   Source                              : generated by Saha,2015
+ psppar.Cl:
+   Atomic number                       : 17
+   Local Pseudo Potential (HGH convention):
+     Coefficients (c1 .. c4): [0.247384611942657, -0.7781422705945, 0.0, 0.0]
+     Rloc                              : 0.432280301321
+   No. of Electrons                    : 7
+   Non Linear Core Correction term:
+     Core charge                       : 184.0131056027776
+     Rcore                             : 0.3178991803942
+   NonLocal PSP Parameters:
+   - Channel (l)                       : 0
+     Rloc                              : 0.33909199208549
+     h_ij terms: [6.93128057650351, 4.6794901450494, 0.0, -1.63356001435543, 0.0, 0.0]
+   - Channel (l)                       : 1
+     Rloc                              : 0.39005989024802
+     h_ij terms: [3.3358407587094, 0.0, 0.0, 0.0, 0.0, 0.0]
+   PAW patch                           : false
+   Pseudopotential XC                  : -101130
+   Pseudopotential type                : HGH-K + NLCC
+   Radii of active regions (AU):
+     Coarse                            : 1.249258472857296
+     Coarse PSP                        : 0.7313622942150375
+     Fine                              : 0.33909199208549
+   Source                              : generated by Saha,2015
+ psppar.F:
+   Atomic number                       : 9
+   Local Pseudo Potential (HGH convention):
+     Coefficients (c1 .. c4): [-15.360747916, 2.453840389, 0.0, 0.0]
+     Rloc                              : 0.30270764726
+   No. of Electrons                    : 7
+   Non Linear Core Correction term:
+     Core charge                       : 22.15708033690201
+     Rcore                             : 0.2629719027
+   NonLocal PSP Parameters:
+   - Channel (l)                       : 0
+     Rloc                              : 0.318976059
+     h_ij terms: [14.7072505678, -0.412166422511, 0.0, -2.9854852662, 0.0, 0.0]
+   PAW patch                           : false
+   Pseudopotential XC                  : -101130
+   Pseudopotential type                : HGH-K + NLCC
+   Radii of active regions (AU):
+     Coarse                            : 1.096842065176468
+     Coarse PSP                        : 0.598080110625
+     Fine                              : 0.30270764726
+   Source                              : generated by Saha,2015
+ psppar.H:
+   Atomic number                       : 1
+   Local Pseudo Potential (HGH convention):
+     Coefficients (c1 .. c4): [-3.722900963668, 0.657596429179, 0.0, 0.0]
+     Rloc                              : 0.228727444559
+   No. of Electrons                    : 1
+   PAW patch                           : false
+   Pseudopotential XC                  : -101130
+   Pseudopotential type                : HGH-K
+   Radii of active regions (AU):
+     Coarse                            : 1.463418464633951
+     Coarse PSP                        : 0.0
+     Fine                              : 0.228727444559
+     Source                            : PSP File
+   Source                              : generated by Saha,2015
+   Non Linear Core Correction term     : __not_a_value__
+ psppar.He:
+   Atomic number                       : 2
+   Local Pseudo Potential (HGH convention):
+     Coefficients (c1 .. c4): [-8.430798883674, 1.5991192162693, 0.0, 0.0]
+     Rloc                              : 0.22
+   No. of Electrons                    : 2
+   PAW patch                           : false
+   Pseudopotential XC                  : -101130
+   Pseudopotential type                : HGH-K
+   Radii of active regions (AU):
+     Coarse                            : 0.9362368409545314
+     Coarse PSP                        : 0.0
+     Fine                              : 0.22
+   Source                              : generated by Saha,2015
+ psppar.K:
+   Atomic number                       : 19
+   Local Pseudo Potential (HGH convention):
+     Coefficients (c1 .. c4): [18.558954633276, -2.984372520884693, 0.0, 0.0]
+     Rloc                              : 0.61119999999
+   No. of Electrons                    : 9
+   Non Linear Core Correction term:
+     Core charge                       : 79.29916200780175
+     Rcore                             : 0.36896141087604
+   NonLocal PSP Parameters:
+   - Channel (l)                       : 0
+     Rloc                              : 0.4142999999999
+     h_ij terms: [-1.543240867445072, -4.114567568259902, 0.0, 0.252013954317879, 0.0, 0.0]
+   - Channel (l)                       : 1
+     Rloc                              : 0.3565499999999
+     h_ij terms: [-5.66832167820548, -6.613214892013421, 0.0, 2.517412194189193, 0.0, 0.0]
+   - Channel (l)                       : 2
+     Rloc                              : 0.3449999999999
+     h_ij terms: [-11.65920206085068, 0.0, 0.0, 0.0, 0.0, 0.0]
+   PAW patch                           : false
+   Pseudopotential XC                  : -101130
+   Pseudopotential type                : HGH-K + NLCC
+   Radii of active regions (AU):
+     Coarse                            : 2.372694601339731
+     Coarse PSP                        : 0.7768124999998125
+     Fine                              : 0.3449999999999
+   Source                              : generated by Saha,2015
+ psppar.Li:
+   Atomic number                       : 3
+   Local Pseudo Potential (HGH convention):
+     Coefficients (c1 .. c4): [-1.07248735835, 0.201649152445, 0.0, 0.0]
+     Rloc                              : 0.811627593845
+   No. of Electrons                    : 1
+   Non Linear Core Correction term:
+     Core charge                       : 1.012066538482753
+     Rcore                             : 0.7680116744624
+   NonLocal PSP Parameters:
+   - Channel (l)                       : 0
+     Rloc                              : 0.6975989912
+     h_ij terms: [1.55506211655, 0.0, 0.0, 0.0, 0.0, 0.0]
+   PAW patch                           : false
+   Pseudopotential XC                  : -101130
+   Pseudopotential type                : HGH-K + NLCC
+   Radii of active regions (AU):
+     Coarse                            : 2.176589136491379
+     Coarse PSP                        : 1.3079981085
+     Fine                              : 0.6975989912
+   Source                              : generated by Saha,2015
+ psppar.Mg:
+   Atomic number                       : 12
+   Local Pseudo Potential (HGH convention):
+     Coefficients (c1 .. c4): [-5.223929095, 0.913704167481045, 0.0, 0.0]
+     Rloc                              : 0.65406138674
+   No. of Electrons                    : 2
+   Non Linear Core Correction term:
+     Core charge                       : 29.36559970556812
+     Rcore                             : 0.4558953773
+   NonLocal PSP Parameters:
+   - Channel (l)                       : 0
+     Rloc                              : 0.48001550334
+     h_ij terms: [6.3425876317, 3.44562154385, 0.0, -2.0821428538223, 0.0, 0.0]
+   - Channel (l)                       : 1
+     Rloc                              : 0.57941606652
+     h_ij terms: [1.96775700175144, 0.0, 0.0, 0.0, 0.0, 0.0]
+   PAW patch                           : false
+   Pseudopotential XC                  : -101130
+   Pseudopotential type                : HGH-K + NLCC
+   Radii of active regions (AU):
+     Coarse                            : 1.688250099201262
+     Coarse PSP                        : 1.055156312000789
+     Fine                              : 0.48001550334
+   Source                              : generated by Saha,2015
+ psppar.Mo:
+   Atomic number                       : 42
+   Local Pseudo Potential (HGH convention):
+     Coefficients (c1 .. c4): [16.547680226758, -2.288227341866853, 0.0, 0.0]
+     Rloc                              : 0.5605643446972
+   No. of Electrons                    : 14
+   Non Linear Core Correction term:
+     Core charge                       : 91.89490210605577
+     Rcore                             : 0.410572844611623
+   NonLocal PSP Parameters:
+   - Channel (l)                       : 0
+     Rloc                              : 0.4521813761096
+     h_ij terms: [-2.2095775983651, -2.20099955154899, 0.0, 0.58224236052394, 0.0, 0.0]
+   - Channel (l)                       : 1
+     Rloc                              : 0.4175274841996
+     h_ij terms: [-4.83557874659931, -1.44535026937913, 0.0, 1.08498763632474, 0.0, 0.0]
+   - Channel (l)                       : 2
+     Rloc                              : 0.3732151883991
+     h_ij terms: [-5.38426478871054, 0.0, 0.0, 0.0, 0.0, 0.0]
+   PAW patch                           : false
+   Pseudopotential XC                  : -101130
+   Pseudopotential type                : HGH-K + NLCC
+   Radii of active regions (AU):
+     Coarse                            : 1.838782158627461
+     Coarse PSP                        : 0.8478400802055001
+     Fine                              : 0.3732151883991
+   Source                              : generated by Saha,2015
+ psppar.N:
+   Atomic number                       : 7
+   Local Pseudo Potential (HGH convention):
+     Coefficients (c1 .. c4): [-8.10098063736025, 1.294191224, 0.0, 0.0]
+     Rloc                              : 0.40469225352
+   No. of Electrons                    : 5
+   Non Linear Core Correction term:
+     Core charge                       : 13.66217805640783
+     Rcore                             : 0.3540622374
+   NonLocal PSP Parameters:
+   - Channel (l)                       : 0
+     Rloc                              : 0.4256053017
+     h_ij terms: [9.2183335485526, 0.38356320566013, 0.0, -2.4905918767, 0.0, 0.0]
+   PAW patch                           : false
+   Pseudopotential XC                  : -101130
+   Pseudopotential type                : HGH-K + NLCC
+   Radii of active regions (AU):
+     Coarse                            : 1.370256482166319
+     Coarse PSP                        : 0.7980099406875
+     Fine                              : 0.40469225352
+     Source                            : PSP File
+   Source                              : generated by Saha,2015
+ psppar.Nb:
+   Atomic number                       : 41
+   Local Pseudo Potential (HGH convention):
+     Coefficients (c1 .. c4): [13.838037169243, -2.0016609628612, 0.0, 0.0]
+     Rloc                              : 0.61579679022
+   No. of Electrons                    : 13
+   Non Linear Core Correction term:
+     Core charge                       : 87.50197824978778
+     Rcore                             : 0.42811497533126
+   NonLocal PSP Parameters:
+   - Channel (l)                       : 0
+     Rloc                              : 0.502783052136875
+     h_ij terms: [-2.900061983668543, -1.48582888135167, 0.0, 0.4326566101844, 0.0, 0.0]
+   - Channel (l)                       : 1
+     Rloc                              : 0.4666485384327
+     h_ij terms: [-5.18626432388526, -1.00377927466955, 0.0, 1.319131809475, 0.0, 0.0]
+   - Channel (l)                       : 2
+     Rloc                              : 0.39958843620849
+     h_ij terms: [-5.100337223271, 0.0, 0.0, 0.0, 0.0, 0.0]
+   PAW patch                           : false
+   Pseudopotential XC                  : -101130
+   Pseudopotential type                : HGH-K + NLCC
+   Radii of active regions (AU):
+     Coarse                            : 1.997987043080055
+     Coarse PSP                        : 0.9427182227566406
+     Fine                              : 0.39958843620849
+   Source                              : generated by Saha,2015
+ psppar.Ne:
+   Atomic number                       : 10
+   Local Pseudo Potential (HGH convention):
+     Coefficients (c1 .. c4): [-17.941168123, 3.028481600862, 0.0, 0.0]
+     Rloc                              : 0.308091048141
+   No. of Electrons                    : 8
+   Non Linear Core Correction term:
+     Core charge                       : 23.20542466418226
+     Rcore                             : 0.29303890142
+   NonLocal PSP Parameters:
+   - Channel (l)                       : 0
+     Rloc                              : 0.318595034712
+     h_ij terms: [15.0871016106, -0.637770639046, 0.0, -3.1545376573, 0.0, 0.0]
+   PAW patch                           : false
+   Pseudopotential XC                  : -101130
+   Pseudopotential type                : HGH-K + NLCC
+   Radii of active regions (AU):
+     Coarse                            : 1.001971816796834
+     Coarse PSP                        : 0.5973656900850001
+     Fine                              : 0.308091048141
+   Source                              : generated by Saha,2015
+ psppar.O:
+   Atomic number                       : 8
+   Local Pseudo Potential (HGH convention):
+     Coefficients (c1 .. c4): [-11.7435870154, 1.90653967947, 0.0, 0.0]
+     Rloc                              : 0.3454999999
+   No. of Electrons                    : 6
+   Non Linear Core Correction term:
+     Core charge                       : 9.020856821247431
+     Rcore                             : 0.3451737259
+   NonLocal PSP Parameters:
+   - Channel (l)                       : 0
+     Rloc                              : 0.368040785471
+     h_ij terms: [10.85890680355, -0.429767298715, 0.0, -2.1290113946, 0.0, 0.0]
+   PAW patch                           : false
+   Pseudopotential XC                  : -101130
+   Pseudopotential type                : HGH-K + NLCC
+   Radii of active regions (AU):
+     Coarse                            : 1.215575721499752
+     Coarse PSP                        : 0.690076472758125
+     Fine                              : 0.3454999999
+     Source                            : PSP File
+   Source                              : generated by Saha,2015
+ psppar.P:
+   Atomic number                       : 15
+   Local Pseudo Potential (HGH convention):
+     Coefficients (c1 .. c4): [-5.64603301035, 0.6442592294, 0.0, 0.0]
+     Rloc                              : 0.47302706024
+   No. of Electrons                    : 5
+   Non Linear Core Correction term:
+     Core charge                       : 92.49620607429222
+     Rcore                             : 0.350694310582
+   NonLocal PSP Parameters:
+   - Channel (l)                       : 0
+     Rloc                              : 0.373360419343
+     h_ij terms: [4.62035081029, 4.2189516133042, 0.0, -0.63842593734, 0.0, 0.0]
+   - Channel (l)                       : 1
+     Rloc                              : 0.4278715404
+     h_ij terms: [3.53692299847105, 0.0, 0.0, 0.0, 0.0, 0.0]
+   PAW patch                           : false
+   Pseudopotential XC                  : -101130
+   Pseudopotential type                : HGH-K + NLCC
+   Radii of active regions (AU):
+     Coarse                            : 1.557639957122584
+     Coarse PSP                        : 0.8022591382500001
+     Fine                              : 0.373360419343
+   Source                              : generated by Saha,2015
+ psppar.Pd:
+   Atomic number                       : 46
+   Local Pseudo Potential (HGH convention):
+     Coefficients (c1 .. c4): [18.52091413506, -2.49094604223, 0.0, 0.0]
+     Rloc                              : 0.4864014218922
+   No. of Electrons                    : 18
+   Non Linear Core Correction term:
+     Core charge                       : 139.7633002785596
+     Rcore                             : 0.32176306116259
+   NonLocal PSP Parameters:
+   - Channel (l)                       : 0
+     Rloc                              : 0.38871609676113
+     h_ij terms: [-0.43162777936516, -3.0991866060069, 0.0, 0.4211606956641, 0.0, 0.0]
+   - Channel (l)                       : 1
+     Rloc                              : 0.3640071099543
+     h_ij terms: [-5.7404428003393, -2.57489735223413, 0.0, 1.90163517877265, 0.0, 0.0]
+   - Channel (l)                       : 2
+     Rloc                              : 0.3314830397886
+     h_ij terms: [-6.32798437393424, 0.0, 0.0, 0.0, 0.0, 0.0]
+   PAW patch                           : false
+   Pseudopotential XC                  : -101130
+   Pseudopotential type                : HGH-K + NLCC
+   Radii of active regions (AU):
+     Coarse                            : 1.798235430151363
+     Coarse PSP                        : 0.7288426814271187
+     Fine                              : 0.3314830397886
+   Source                              : generated by Saha,2015
+ psppar.Rh:
+   Atomic number                       : 45
+   Local Pseudo Potential (HGH convention):
+     Coefficients (c1 .. c4): [17.64742289556253, -2.34984449179321, 0.0, 0.0]
+     Rloc                              : 0.506581478768
+   No. of Electrons                    : 17
+   Non Linear Core Correction term:
+     Core charge                       : 77.53361433361582
+     Rcore                             : 0.3341668424942
+   NonLocal PSP Parameters:
+   - Channel (l)                       : 0
+     Rloc                              : 0.40602935102981
+     h_ij terms: [-0.7801921679007, -2.506330483103, 0.0, 0.0684581106289812, 0.0, 0.0]
+   - Channel (l)                       : 1
+     Rloc                              : 0.379667312497
+     h_ij terms: [-5.86004274829986, -2.1883150637743, 0.0, 1.71644371119977, 0.0, 0.0]
+   - Channel (l)                       : 2
+     Rloc                              : 0.345188538977226
+     h_ij terms: [-6.0837219653467, 0.0, 0.0, 0.0, 0.0, 0.0]
+   PAW patch                           : false
+   Pseudopotential XC                  : -101130
+   Pseudopotential type                : HGH-K + NLCC
+   Radii of active regions (AU):
+     Coarse                            : 1.798235430151363
+     Coarse PSP                        : 0.7613050331808938
+     Fine                              : 0.345188538977226
+   Source                              : generated by Saha,2015
+ psppar.Ru:
+   Atomic number                       : 44
+   Local Pseudo Potential (HGH convention):
+     Coefficients (c1 .. c4): [17.097812021312, -2.31321482201, 0.0, 0.0]
+     Rloc                              : 0.523488998114963
+   No. of Electrons                    : 16
+   Non Linear Core Correction term:
+     Core charge                       : 69.10406598803708
+     Rcore                             : 0.34699534078952
+   NonLocal PSP Parameters:
+   - Channel (l)                       : 0
+     Rloc                              : 0.420084752466025
+     h_ij terms: [-1.06708719079504, -2.258804972708725, 0.0, 0.0740513397598, 0.0, 0.0]
+   - Channel (l)                       : 1
+     Rloc                              : 0.3917930534706
+     h_ij terms: [-6.030626069773081, -2.212331332531853, 0.0, 1.88580623488511, 0.0, 0.0]
+   - Channel (l)                       : 2
+     Rloc                              : 0.35428662284821
+     h_ij terms: [-5.83110013019382, 0.0, 0.0, 0.0, 0.0, 0.0]
+   PAW patch                           : false
+   Pseudopotential XC                  : -101130
+   Pseudopotential type                : HGH-K + NLCC
+   Radii of active regions (AU):
+     Coarse                            : 1.808735290785716
+     Coarse PSP                        : 0.7876589108737969
+     Fine                              : 0.35428662284821
+   Source                              : generated by Saha,2015
+ psppar.Sc:
+   Atomic number                       : 21
+   Local Pseudo Potential (HGH convention):
+     Coefficients (c1 .. c4): [9.006013845124, -0.6595379633673, 0.0, 0.0]
+     Rloc                              : 0.54694028362
+   No. of Electrons                    : 11
+   Non Linear Core Correction term:
+     Core charge                       : 62.19932170074663
+     Rcore                             : 0.38795194533398
+   NonLocal PSP Parameters:
+   - Channel (l)                       : 0
+     Rloc                              : 0.4287685336472
+     h_ij terms: [-1.645162941144, -2.7303565196921, 0.0, 1.046465375366, 0.0, 0.0]
+   - Channel (l)                       : 1
+     Rloc                              : 0.41183165346256
+     h_ij terms: [-5.68053088023557, -1.12573315454448, 0.0, 1.29590126529733, 0.0, 0.0]
+   - Channel (l)                       : 2
+     Rloc                              : 0.3527556560268724
+     h_ij terms: [-7.1573080830245, 0.0, 0.0, 0.0, 0.0, 0.0]
+   PAW patch                           : false
+   Pseudopotential XC                  : -101130
+   Pseudopotential type                : HGH-K + NLCC
+   Radii of active regions (AU):
+     Coarse                            : 1.95306539808357
+     Coarse PSP                        : 0.8039410005885
+     Fine                              : 0.3527556560268724
+   Source                              : generated by Saha,2015
+ psppar.Si:
+   Atomic number                       : 14
+   Local Pseudo Potential (HGH convention):
+     Coefficients (c1 .. c4): [-3.88383097485, 0.3904838172143, 0.0, 0.0]
+     Rloc                              : 0.55318460771
+   No. of Electrons                    : 4
+   Non Linear Core Correction term:
+     Core charge                       : 47.61008323253564
+     Rcore                             : 0.392030148664
+   NonLocal PSP Parameters:
+   - Channel (l)                       : 0
+     Rloc                              : 0.41164534845
+     h_ij terms: [5.4113418416, 4.01974003784, 0.0, -1.6000061332, 0.0, 0.0]
+   - Channel (l)                       : 1
+     Rloc                              : 0.49248082589
+     h_ij terms: [2.4379425883056, 0.0, 0.0, 0.0, 0.0, 0.0]
+   PAW patch                           : false
+   Pseudopotential XC                  : -101130
+   Pseudopotential type                : HGH-K + NLCC
+   Radii of active regions (AU):
+     Coarse                            : 1.806025343502968
+     Coarse PSP                        : 0.9234015485437499
+     Fine                              : 0.41164534845
+   Source                              : generated by Saha,2015
+ psppar.Sr:
+   Atomic number                       : 38
+   Local Pseudo Potential (HGH convention):
+     Coefficients (c1 .. c4): [17.9840390492, -2.608642539894, 0.0, 0.0]
+     Rloc                              : 0.6512
+   No. of Electrons                    : 10
+   Non Linear Core Correction term:
+     Core charge                       : 216.2996386517572
+     Rcore                             : 0.40896141087
+   NonLocal PSP Parameters:
+   - Channel (l)                       : 0
+     Rloc                              : 0.45429999999
+     h_ij terms: [-3.5347373593044, -5.455795365537, 0.0, 2.71195826791, 0.0, 0.0]
+   - Channel (l)                       : 1
+     Rloc                              : 0.39655
+     h_ij terms: [10.10752536253, -3.88764905894, 0.0, -3.4269174645038, 0.0, 0.0]
+   - Channel (l)                       : 2
+     Rloc                              : 0.385
+     h_ij terms: [-7.3523938148, 0.0, 0.0, 0.0, 0.0, 0.0]
+   PAW patch                           : false
+   Pseudopotential XC                  : -101130
+   Pseudopotential type                : HGH-K + NLCC
+   Radii of active regions (AU):
+     Coarse                            : 1.947775192439769
+     Coarse PSP                        : 0.85181249998125
+     Fine                              : 0.385
+   Source                              : generated by Saha,2015
+ psppar.Tc:
+   Atomic number                       : 43
+   Local Pseudo Potential (HGH convention):
+     Coefficients (c1 .. c4): [16.943393966879, -2.21488088943, 0.0, 0.0]
+     Rloc                              : 0.54180280845133
+   No. of Electrons                    : 15
+   Non Linear Core Correction term:
+     Core charge                       : 46.89060191508509
+     Rcore                             : 0.362040750064298
+   NonLocal PSP Parameters:
+   - Channel (l)                       : 0
+     Rloc                              : 0.43648366936445
+     h_ij terms: [-1.4499272005948, -1.7836584601582, 0.0, -0.180420895438123, 0.0, 0.0]
+   - Channel (l)                       : 1
+     Rloc                              : 0.407668050017251
+     h_ij terms: [-5.959332468951, -1.85359439400171, 0.0, 1.62632539802278, 0.0, 0.0]
+   - Channel (l)                       : 2
+     Rloc                              : 0.36946705586482
+     h_ij terms: [-5.598086853039614, 0.0, 0.0, 0.0, 0.0, 0.0]
+   PAW patch                           : false
+   Pseudopotential XC                  : -101130
+   Pseudopotential type                : HGH-K + NLCC
+   Radii of active regions (AU):
+     Coarse                            : 1.650084139935498
+     Coarse PSP                        : 0.8184068800583437
+     Fine                              : 0.36946705586482
+   Source                              : generated by Saha,2015
+ psppar.Ti:
+   Atomic number                       : 22
+   Local Pseudo Potential (HGH convention):
+     Coefficients (c1 .. c4): [9.5447030280023, -0.89545449549171, 0.0, 0.0]
+     Rloc                              : 0.51194028361941
+   No. of Electrons                    : 12
+   Non Linear Core Correction term:
+     Core charge                       : 89.14847832599766
+     Rcore                             : 0.35495194533398
+   NonLocal PSP Parameters:
+   - Channel (l)                       : 0
+     Rloc                              : 0.3937685336471791
+     h_ij terms: [-1.2025058067602, -3.47669531447943, 0.0, 1.43469670397324, 0.0, 0.0]
+   - Channel (l)                       : 1
+     Rloc                              : 0.37683165346256
+     h_ij terms: [-5.9304430228735, -1.4279047722263, 0.0, 1.447705258480425, 0.0, 0.0]
+   - Channel (l)                       : 2
+     Rloc                              : 0.3177556560269
+     h_ij terms: [-8.59110763026845, 0.0, 0.0, 0.0, 0.0, 0.0]
+   PAW patch                           : false
+   Pseudopotential XC                  : -101130
+   Pseudopotential type                : HGH-K + NLCC
+   Radii of active regions (AU):
+     Coarse                            : 1.729772467893901
+     Coarse PSP                        : 0.7383160005884608
+     Fine                              : 0.3177556560269
+   Source                              : generated by Saha,2015
+ psppar.V:
+   Atomic number                       : 23
+   Local Pseudo Potential (HGH convention):
+     Coefficients (c1 .. c4): [8.4098964866238, 0.787330158962983, 0.0, 0.0]
+     Rloc                              : 0.47939097685115
+   No. of Electrons                    : 13
+   Non Linear Core Correction term:
+     Core charge                       : 64.50030036074192
+     Rcore                             : 0.395197264428806
+   NonLocal PSP Parameters:
+   - Channel (l)                       : 0
+     Rloc                              : 0.4111885570156
+     h_ij terms: [-0.890386392203003, -1.897890220664631, 0.0, 0.049289697249447, 0.0, 0.0]
+   - Channel (l)                       : 1
+     Rloc                              : 0.35160114320482
+     h_ij terms: [-5.98939779021679, -2.110220957453925, 0.0, 1.302169792664963, 0.0, 0.0]
+   - Channel (l)                       : 2
+     Rloc                              : 0.334940106345102
+     h_ij terms: [-8.026641730282138, 0.0, 0.0, 0.0, 0.0, 0.0]
+   PAW patch                           : false
+   Pseudopotential XC                  : -101130
+   Pseudopotential type                : HGH-K + NLCC
+   Radii of active regions (AU):
+     Coarse                            : 1.685652904297364
+     Coarse PSP                        : 0.77097854440425
+     Fine                              : 0.334940106345102
+   Source                              : generated by Saha,2015
+ psppar.Y:
+   Atomic number                       : 39
+   Local Pseudo Potential (HGH convention):
+     Coefficients (c1 .. c4): [13.3228615981984, -1.8455727155425, 0.0, 0.0]
+     Rloc                              : 0.678482568868162
+   No. of Electrons                    : 11
+   Non Linear Core Correction term:
+     Core charge                       : 68.84424191595312
+     Rcore                             : 0.484163488741529
+   NonLocal PSP Parameters:
+   - Channel (l)                       : 0
+     Rloc                              : 0.5340504300132191
+     h_ij terms: [-4.056977168535825, -1.731198764561603, 0.0, 0.8735321076927919, 0.0, 
+                0.0]
+   - Channel (l)                       : 1
+     Rloc                              : 0.513349798676458
+     h_ij terms: [-5.09536988961823, -0.6711042184086585, 0.0, 0.9068024964193503, 0.0, 
+                0.0]
+   - Channel (l)                       : 2
+     Rloc                              : 0.441145801810622
+     h_ij terms: [-4.699263058816667, 0.0, 0.0, 0.0, 0.0, 0.0]
+   PAW patch                           : false
+   Pseudopotential XC                  : -101130
+   Pseudopotential type                : HGH-K + NLCC
+   Radii of active regions (AU):
+     Coarse                            : 2.144806958312758
+     Coarse PSP                        : 1.001344556274786
+     Fine                              : 0.441145801810622
+   Source                              : generated by Saha,2015
+ psppar.Zr:
+   Atomic number                       : 40
+   Local Pseudo Potential (HGH convention):
+     Coefficients (c1 .. c4): [18.041218340157, -2.805598501511, 0.0, 0.0]
+     Rloc                              : 0.58023377012
+   No. of Electrons                    : 12
+   Non Linear Core Correction term:
+     Core charge                       : 224.5079748761864
+     Rcore                             : 0.3697252502098743
+   NonLocal PSP Parameters:
+   - Channel (l)                       : 0
+     Rloc                              : 0.42726557852151
+     h_ij terms: [-3.8319386900261, -5.00120719730874, 0.0, 3.1864187836681, 0.0, 0.0]
+   - Channel (l)                       : 1
+     Rloc                              : 0.3545585293891
+     h_ij terms: [10.8113886916277, -3.41892979117334, 0.0, -3.6297776084643, 0.0, 0.0]
+   - Channel (l)                       : 2
+     Rloc                              : 0.339874517241971
+     h_ij terms: [-7.364468015736, 0.0, 0.0, 0.0, 0.0, 0.0]
+   PAW patch                           : false
+   Pseudopotential XC                  : -101130
+   Pseudopotential type                : HGH-K + NLCC
+   Radii of active regions (AU):
+     Coarse                            : 1.821659841643629
+     Coarse PSP                        : 0.8011229597278312
+     Fine                              : 0.339874517241971
+   Source                              : generated by Saha,2015
+ psolver:
+   kernel:
+     screening                         : 0 #      Mu screening parameter
+     isf_order                         : 16 #     Order of the Interpolating Scaling Function family
+     stress_tensor                     : Yes #    Triggers the calculation of the stress tensor
+   environment:
+     cavity                            : none #   Type of the cavity
+     fd_order                          : 16 #     Order of the Finite-difference derivatives for the GPS solver
+     itermax                           : 200 #    Maximum number of iterations of the GPS outer loop
+     minres                            : 1.e-8 #  Convergence threshold of the loop
+     pb_method                         : none #   Defines the method for the Poisson Boltzmann Equation
+   setup:
+     accel                             : none #   Material Acceleration
+     taskgroup_size                    : 0 #      Size of the taskgroups of the Poisson Solver
+     global_data                       : No #     Charge density and Electrostatic potential are given by global arrays
+     verbose                           : Yes #    Verbosity switch
+     output                            : none #   Quantities to be plotted after the main solver routine
+ chess:
+   foe:
+     ef_interpol_det                   : 1.e-12 # FOE max determinant of cubic interpolation matrix
+     ef_interpol_chargediff            : 1.0 #    FOE max charge difference for interpolation
+     evbounds_nsatur                   : 3 #      Number of FOE cycles before the eigenvalue bounds are shrinked (linear)
+     evboundsshrink_nsatur             : 4 #      Maximal number of unsuccessful eigenvalue bounds shrinkings
+     fscale                            : 5.e-2 #  Initial guess for the error function decay length
+     fscale_lowerbound                 : 5.e-3 #  Lower bound for the error function decay length
+     fscale_upperbound                 : 5.e-2 #  Upper bound for the error function decay length
+     eval_range_foe: [-0.5, 0.5] #                Lower and upper bound of the eigenvalue spectrum, will be adjusted 
+      #                                            automatically if chosen unproperly
+     accuracy_foe                      : 1.e-5 #  Required accuracy for the Chebyshev fit for FOE
+     accuracy_ice                      : 1.e-8 #  Required accuracy for the Chebyshev fit for ICE (calculation of matrix powers)
+     accuracy_penalty                  : 1.e-5 #  Required accuracy for the Chebyshev fit for the penalty function
+     accuracy_entropy                  : 1.e-4 #  Required accuracy for the Chebyshev fit for the function to calculate the entropy term
+     betax_foe                         : -1000.0 # the exponent in the exponential penalty function which is used to determine the 
+      #                                            eigenvalue bounds for FOE
+     betax_ice                         : -1000.0 # the exponent in the exponential penalty function which is used to determine the 
+      #                                            eigenvalue bounds for ICE
+     occupation_function               : 102 #    the function to assign the occupation numbers
+     adjust_fscale                     : yes #    dynamically adjust the value of fscale or not
+     matmul_optimize_load_balancing    : no #     optimize the load balancing of the sparse matrix matrix multiplications (at the cost 
+      #                                            of memory unbalancing)
+     fscale_ediff_low                  : 5.e-5 #  lower bound for the optimal relative energy difference between the kernel and the 
+      #                                            control kernel
+     fscale_ediff_up                   : 1.e-4 #  upper bound for the optimal relative energy difference between the kernel and the 
+      #                                            control kernel
+   lapack:
+     blocksize_pdsyev                  : -8 #     SCALAPACK linear scaling blocksize for diagonalization
+     blocksize_pdgemm                  : -8 #     SCALAPACK linear scaling blocksize for matrix matrix multiplication
+     maxproc_pdsyev                    : 4 #      SCALAPACK linear scaling max num procs
+     maxproc_pdgemm                    : 4 #      SCALAPACK linear scaling max num procs
+   ntpoly:
+     threshold_density                 : 0. #     threshold for flushing small matrix values of the density matrix.
+     convergence_density               : 1.e-10 # threshold for convergence of ntpoly purification calculation.
+     threshold_overlap                 : 0. #     threshold for flushing small matrix values of the overlap matrix.
+     convergence_overlap               : 1.e-10 # threshold for convergence of ntpoly overlap inverse calculation.
+ output:
+   verbosity                           : 2 #      Verbosity of the output
+   atomic_density_matrix               : None #   Dictionary of the atoms for which the atomic density matrix has to be plotted
+   sdos                                : No #     Spatially-resolved density of states
+   orbitals                            : None #   Write KS orbitals in the full simulation domain (might take lot of disk space!)
+   apply_coeffs                        : yes #    apply the coefficients to the SFs when writing orbitals in LS-BigDFT
+   outputpsiid                         : wavefunction # basename of the output wavefunctions files written in the data directory
+   coupling_matrix                     : complete # kind of the coupling matrix which have to be plotted
+ kpt:
+   method                              : manual # K-point sampling method
+   kpt: #                                         Kpt coordinates
+   -  [0., 0., 0.]
+   wkpt: [1.] #                                   Kpt weights
+   bands                               : No #     For doing band structure calculation
+ geopt:
+   method                              : none #   Geometry optimisation method
+   ncount_cluster_x                    : 1 #      Maximum number of force evaluations
+   frac_fluct                          : 1. #     Fraction of force fluctuations. Stop if fmax < forces_fluct*frac_fluct
+   forcemax                            : 0. #     Max forces criterion when stop
+   randdis                             : 0. #     Random displacement amplitude
+   betax                               : 4. #     Stepsize for the geometry optimization
+   beta_stretchx                       : 5e-1 #   Stepsize for steepest descent in stretching mode direction (only if in biomode)
+ md:
+   mdsteps                             : 0 #      Number of MD steps
+   print_frequency                     : 1 #      Printing frequency for energy.dat and Trajectory.xyz files
+   temperature                         : 300.d0 # Initial temperature in Kelvin
+   timestep                            : 20.d0 #  Time step for integration (in a.u.)
+   no_translation                      : No #     Logical input to set translational correction
+   thermostat                          : none #   Activates a thermostat for MD
+   wavefunction_extrapolation          : 0 #      Activates the wavefunction extrapolation for MD
+   always_from_scratch                 : No #     When true, always restart wavefunctions from scratch to eliminate dissipation effects
+   restart_nose                        : No #     Restart Nose Hoover Chain information from md.restart
+   restart_pos                         : No #     Restart nuclear position information from md.restart
+   restart_vel                         : No #     Restart nuclear velocities information from md.restart
+ mix:
+   iscf                                : 0 #      Mixing scheme (default=0 i.e. direct minimization)
+   itrpmax                             : 1 #      Maximum number of diagonalisation iterations
+   rpnrm_cv                            : 1.e-4 #  Stop criterion on the residue of potential or density
+   norbsempty                          : 0 #      No. of additional bands
+   tel                                 : 0. #     Electronic temperature
+   occopt                              : 1 #      Smearing method
+   alphamix                            : 0. #     Multiplying factors for the mixing
+   alphadiis                           : 2. #     Multiplying factors for the electronic DIIS
+   diis_sd_switch_tolerance            : 0 #      Tolerance to switch between the Steppest Descent and the DIIS
+ sic:
+   sic_approach                        : none #   SIC (self-interaction correction) method
+   sic_alpha                           : 0. #     SIC downscaling parameter
+ tddft:
+   tddft_approach                      : none #   Time-Dependent DFT method
+   decompose_perturbation              : none #   Indicate the directory of the perturbation to be decomposed in the basis of empty 
+    #                                              states
+ mode:
+   method                              : dft #    Run method of BigDFT call
+   add_coulomb_force                   : No #     Boolean to add coulomb force on top of any of above selected force
+ perf:
+   debug                               : No #     Debug option
+   fftcache                            : 8192 #   Cache size for the FFT
+   accel                               : NO #     Acceleration (hardware)
+   ocl_platform                        : ~ #      Chosen OCL platform
+   ocl_devices                         : ~ #      Chosen OCL devices
+   blas                                : No #     CUBLAS acceleration
+   projrad                             : 15. #    Radius of the projector as a function of the maxrad
+   exctxpar                            : OP2P #   Exact exchange parallelisation scheme
+   ig_diag                             : Yes #    Input guess (T=Direct, F=Iterative) diag. of Ham.
+   ig_norbp                            : 5 #      Input guess Orbitals per process for iterative diag.
+   ig_blocks: [300, 800] #                        Input guess Block sizes for orthonormalisation
+   ig_tol                              : 1.0e-4 # Input guess Tolerance criterion
+   methortho                           : 0 #      Orthogonalisation
+   rho_commun                          : DEF #    Density communication scheme (DBL, RSC, MIX)
+   unblock_comms                       : OFF #    Overlap Communications of fields (OFF,DEN,POT)
+   linear                              : OFF #    Linear Input Guess approach
+   tolsym                              : 1.0e-8 # Tolerance for symmetry detection
+   signaling                           : No #     Expose calculation results on Network
+   signaltimeout                       : 0 #      Time out on startup for signal connection (in seconds)
+   domain                              : ~ #      Domain to add to the hostname to find the IP
+   inguess_geopt                       : 0 #      Input guess to be used during the optimization
+   store_index                         : Yes #    Store indices or recalculate them for linear scaling
+   store_overlap_matrices              : Yes #    Store all matrices relating to overlap powers, or recalculate them for linear scaling
+   psp_onfly                           : Yes #    Calculate pseudopotential projectors on the fly
+   multipole_preserving                : No #     (EXPERIMENTAL) Preserve the multipole moments of the ionic density
+   mp_isf                              : 16 #     (EXPERIMENTAL) Interpolating scaling function or lifted dual order for the multipole 
+    #                                              preserving
+   mixing_after_inputguess             : 1 #      Mixing step after linear input guess
+   iterative_orthogonalization         : No #     Iterative_orthogonalization for input guess orbitals
+   check_sumrho                        : 1 #      Enables linear sumrho check
+   check_overlap                       : 1 #      Enables linear overlap check
+   experimental_mode                   : No #     Activate the experimental mode in linear scaling
+   explicit_locregcenters              : No #     Linear scaling explicitly specify localization centers
+   calculate_KS_residue                : Yes #    Linear scaling calculate Kohn-Sham residue
+   intermediate_forces                 : No #     Linear scaling calculate intermediate forces
+   kappa_conv                          : 0.1 #    Exit kappa for extended input guess (experimental mode)
+   calculate_gap                       : No #     Linear scaling calculate the HOMO LUMO gap
+   loewdin_charge_analysis             : No #     Linear scaling perform a Loewdin charge analysis at the end of the calculation
+   coeff_weight_analysis               : No #     Linear scaling perform a Loewdin charge analysis of the coefficients for fragment 
+    #                                              calculations
+   check_matrix_compression            : Yes #    Linear scaling perform a check of the matrix compression routines
+   correction_co_contra                : Yes #    Linear scaling correction covariant / contravariant gradient
+   FOE_restart                         : 0 #      Restart method to be used for the FOE method
+   imethod_overlap                     : 1 #      Method to calculate the overlap matrices (1=old, 2=new)
+   enable_matrix_taskgroups            : True #   Enable the matrix taskgroups
+   hamapp_radius_incr                  : 8 #      Radius enlargement for the Hamiltonian application (in grid points)
+   adjust_kernel_iterations            : True #   Enable the adaptive ajustment of the number of kernel iterations
+   adjust_kernel_threshold             : True #   Enable the adaptive ajustment of the kernel convergence threshold according to the 
+    #                                              support function convergence
+   wf_extent_analysis                  : False #  Perform an analysis of the extent of the support functions (and possibly KS orbitals)
+   foe_gap                             : False #  Use the FOE method to calculate the HOMO-LUMO gap at the end of a calculation
+   calculate_forces                    : True #   Whether or not to calculate the forces at the end of a run (cubic and linear)
+ lin_general:
+   hybrid                              : No #     Activate the hybrid mode; if activated, only the low accuracy values will be relevant
+   nit: [100, 100] #                              Number of iteration with low/high accuracy
+   rpnrm_cv: [1.e-12, 1.e-12] #                   Convergence criterion for low/high accuracy
+   conf_damping                        : -0.5 #   How the confinement should be decreased, only relevant for hybrid mode; negative -> 
+    #                                              automatic
+   taylor_order                        : 0 #      Order of the Taylor approximation; 0 -> exact
+   max_inversion_error                 : 1.d0 #   Linear scaling maximal error of the Taylor approximations to calculate the inverse of 
+    #                                              the overlap matrix
+   output_wf                           : 0 #      Output basis functions; 0 no output, 1 formatted output, 2 Fortran bin, 3 ETSF
+   output_mat                          : 0
+   output_coeff                        : 0 #      Output KS coefficients; 0 no output, 1 formatted output
+   output_multipole_matrices           : True #   If outputting support function matrices, also output the multipole matrices in the 
+    #                                              same format as the other matrices
+   output_matmul                       : False #  If outputting support function matrices, also include the matmul file
+   output_fragments                    : 0 #      Output support functions, kernel and coeffs; 0 fragments and full system, 1 
+    #                                              fragments only, 2 full system only
+   kernel_restart_mode                 : 0 #      Method for restarting kernel; 0 kernel, 1 coefficients, 2 random, 3 diagonal, 4 
+    #                                              full kernel, 5 full coeffs
+   kernel_restart_noise                : 0.0d0 #  Add random noise to kernel or coefficients when restarting
+   frag_num_neighbours                 : 0 #      Number of neighbours to output for each fragment
+   frag_neighbour_cutoff               : 12.0d0 # Number of neighbours to output for each fragment
+   cdft_add_w_guess                    : 0.0 #    Add cdft_add_w_guess * W to kernel for CDFT initial guess
+   calc_dipole                         : No #     Calculate dipole
+   calc_quadrupole                     : No #     Calculate quadrupole
+   subspace_diag                       : No #     Diagonalization at the end
+   extra_states                        : 0 #      Number of extra states to include in support function and kernel optimization (dmin 
+    #                                              only), must be equal to norbsempty
+   calculate_onsite_overlap            : No #     Calculate the onsite overlap matrix (has only an effect if the matrices are all 
+    #                                              written to disk)
+   charge_multipoles                   : 0 #      Calculate the atom-centered multipole coefficients; 0 no, 1 old approach Loewdin, 2 
+    #                                              new approach Projector
+   check_multipoles                    : True #   Check the multipoles computed by computing the total dipole.
+   support_function_multipoles         : False #  Calculate the multipole moments of the support functions
+   plot_locreg_grids                   : False #  Plot the scaling function and wavelets grid of each localization region
+   calculate_FOE_eigenvalues: [0, -1] #           First and last eigenvalue to be calculated using the FOE procedure
+   precision_FOE_eigenvalues           : 5.e-3 #  Decay length of the error function used to extract the eigenvalues (i.e. something like 
+    #                                              the resolution)
+   multipole_centers                   : 0.0 #    Determines whether the multipole centers shall be determined automatically (i.e. 
+    #                                              taking the atoms) or whether they are 
+    #                                              provided manually
+   consider_entropy                    : False #  Indicate whether the entropy contribution to the total energy shall be considered
+ lin_basis:
+   nit: [4, 5] #                                  Maximal number of iterations in the optimization of the 
+    #                                              support functions
+   nit_ig                              : 50 #     maximal number of iterations to optimize the support functions in the extended input 
+    #                                              guess (experimental mode only)
+   extended_ig                         : No #     whether or not to do an extended input guess (will be activated by default in 
+    #                                              experimental mode)
+   orthogonalize_sfs                   : Yes #    whether or not to explicitly orthogonalize SFs (will be activated by default except 
+    #                                              in experimental mode, and may eventually be 
+    #                                              automatically turned off)
+   idsx: [6, 6] #                                 DIIS history for optimization of the support functions 
+    #                                              (low/high accuracy); 0 -> SD
+   gnrm_cv: [1.e-2, 1.e-4] #                      Convergence criterion for the optimization of the support functions 
+    #                                              (low/high accuracy)
+   gnrm_ig                             : 1.e-3 #  Convergence criterion for the optimization of the support functions in the extended 
+    #                                              input guess (experimental mode only)
+   deltae_cv                           : 1.e-4 #  Total relative energy difference to stop the optimization ('experimental_mode' only)
+   gnrm_dyn                            : 1.e-4 #  Dynamic convergence criterion ('experimental_mode' only)
+   min_gnrm_for_dynamic                : 1.e-3 #  Minimal gnrm to active the dynamic gnrm criterion
+   alpha_diis                          : 1.0 #    Multiplicator for DIIS
+   alpha_sd                            : 1.0 #    Initial step size for SD
+   nstep_prec                          : 5 #      Number of iterations in the preconditioner
+   fix_basis                           : 1.e-10 # Fix the support functions if the density change is below this threshold
+   correction_orthoconstraint          : 1 #      Correction for the slight non-orthonormality in the orthoconstraint
+   orthogonalize_ao                    : Yes #    Orthogonalize the atomic orbitals used as input guess
+   reset_DIIS_history                  : No #     Reset the DIIS history when starting the loop which optimizes the support functions
+ lin_kernel:
+   nstep: [1, 1] #                                Number of steps taken when updating the coefficients via 
+    #                                              direct minimization for each iteration of 
+    #                                              the density kernel loop
+   nit: [5, 5] #                                  Number of iterations in the (self-consistent) 
+    #                                              optimization of the density kernel
+   idsx_coeff: [0, 0] #                           DIIS history for direct mininimization - warning, there is 
+    #                                              currently a problem for idsx_coeff/=0
+   idsx: [0, 0] #                                 Mixing method; 0 -> linear mixing, >=1 -> Pulay mixing
+   alphamix: [0.5, 0.5] #                         Mixing parameter (low/high accuracy)
+   gnrm_cv_coeff: [1.e-5, 1.e-5] #                Convergence criterion on the gradient for direct minimization
+   rpnrm_cv: [1.e-10, 1.e-10] #                   Convergence criterion (change in density/potential) for the kernel 
+    #                                              optimization
+   linear_method                       : DIAG #   Method to optimize the density kernel
+   mixing_method                       : DEN #    Quantity to be mixed
+   alpha_sd_coeff                      : 0.2 #    Initial step size for SD for direct minimization
+   alpha_fit_coeff                     : No #     Update the SD step size by fitting a quadratic polynomial
+   coeff_scaling_factor                : 1.0 #    Factor to scale the gradient in direct minimization
+   delta_pnrm                          : -1.0 #   Stop the kernel optimization if the density/potential difference has decreased by this 
+    #                                              factor (deactivated if -1.0)
+   diag_start                          : No #     whether or not to diagonalize the SF Hamiltonian at the beginning of a restart 
+    #                                              calculation (useful for (pseudo-)fragment 
+    #                                              calculations)
+ lin_basis_params:
+   nbasis                              : 4 #      Number of support functions per atom
+   ao_confinement                      : 8.3e-3 # Prefactor for the input guess confining potential
+   confinement: [8.3e-3, 0.0] #                   Prefactor for the confining potential (low/high accuracy)
+   rloc: [7.0, 7.0] #                             Localization radius for the support functions
+   rloc_kernel                         : 9.0 #    Localization radius for the density kernel
+   rloc_kernel_foe                     : 14.0 #   Cutoff radius for the FOE matrix vector multiplications
+ posinp:
+    #----------------------------------------- Atomic positions (by default angstroem units)
+   units                               : angstroem
+   positions:
+   - C: [0.7068998599358333, -3.2555047364770884E-002, 1.2014941623400116E-002]
+   - C: [-0.6236553751024095, -0.802018131876173, -3.7599271420898548E-003]
+   - O: [0.5406207820042427, 1.303913787974351, -5.465691857250897E-002]
+   - O: [1.784466152166657, -0.5849890017903792, 6.5826643763020873E-002]
+   - N: [-1.773652241429537, 0.1186425057502483, 1.8670226764146036E-002]
+   - H: [-2.36848115642563, 1.7982787074317882E-002, -0.8010769976478176]
+   - H: [-0.6160488196424238, -1.430886461687371, -0.9046704648585987]
+   - H: [-2.354754466479847, -1.2702401386821497E-002, 0.8443296982643755]
+   - H: [-0.6170673666229635, -1.486517104871971, 0.8549063459581964]
+   - H: [-0.4552553684039225, 1.411729068178568, -3.1583548152123518E-002]
+   properties:
+     format                            : xyz
+     source                            : glycine1.xyz
+  #--------------------------------------------------------------------------------------- |
+ Data Writing directory                : ./
+  #------------------------------------------------ Input Atomic System (file: glycine1.xyz)
+ Atomic System Properties:
+   Number of atomic types              :  4
+   Number of atoms                     :  10
+   Types of atoms                      :  [ C, O, N, H ]
+   Boundary Conditions                 : Free #Code: F
+   Number of Symmetries                :  0
+   Space group                         : disabled
+  #-------------------------------------------------- Geometry optimization Input Parameters
+ Geometry Optimization Parameters:
+   Maximum steps                       :  1
+   Algorithm                           : none
+   Random atomic displacement          :  0.0E+00
+   Fluctuation in forces               :  1.0E+00
+   Maximum in forces                   :  0.0E+00
+   Steepest descent step               :  4.0E+00
+ Material acceleration                 :  No #iproc=0
+  #------------------------------------------------------------------------ Input parameters
+ DFT parameters:
+   eXchange Correlation:
+     XC ID                             :  &ixc -101130
+     Exchange-Correlation reference    : "XC: Perdew, Burke & Ernzerhof"
+     XC functional implementation      : libXC
+     Reference Papers:
+     - "Comput. Phys. Commun. 183, 2272 (2012)"
+     - "J. P. Perdew, K. Burke, and M. Ernzerhof, Phys. Rev. Lett. 77, 3865 (1996)"
+     - "J. P. Perdew, K. Burke, and M. Ernzerhof, Phys. Rev. Lett. 78, 1396 (1997)"
+     - "J. P. Perdew, K. Burke, and M. Ernzerhof, Phys. Rev. Lett. 77, 3865 (1996)"
+     - "J. P. Perdew, K. Burke, and M. Ernzerhof, Phys. Rev. Lett. 78, 1396 (1997)"
+     Spin polarization                 :  No
+ Basis set definition:
+   Suggested Grid Spacings (a0)        :  [  0.50,  0.50,  0.50 ]
+   Coarse and Fine Radii Multipliers   :  [  5.0,  8.0 ]
+ Self-Consistent Cycle Parameters:
+   Wavefunction:
+     Gradient Norm Threshold           :  &gnrm_cv  1.0E-04
+     CG Steps for Preconditioner       :  6
+     DIIS History length               :  6
+     Max. Wfn Iterations               :  &itermax  50
+     Max. Subspace Diagonalizations    :  1
+     Input wavefunction policy         : INPUT_PSI_LCAO # 0
+     Output wavefunction policy        : NONE # 0
+     Output grid policy                : NONE # 0
+     Virtual orbitals                  :  10
+     Number of plotted density orbitals:  0
+   Density/Potential:
+     Max. Iterations                   :  1
+ Post Optimization Parameters:
+   Finite-Size Effect estimation:
+     Scheduled                         :  No
+  #----------------------------------------------------------------------- System Properties
+ Properties of atoms in the system:
+ - Symbol                              : C #Type No.  01
+   No. of Electrons                    :  4
+   No. of Atoms                        :  2
+   Radii of active regions (AU):
+     Coarse                            :  1.58437
+     Fine                              :  0.41329
+     Coarse PSP                        :  0.81395
+     Source                            : PSP File
+   Grid Spacing threshold (AU)         :  1.03
+   Pseudopotential type                : HGH-K + NLCC
+   Local Pseudo Potential (HGH convention):
+     Rloc                              :  0.41329
+     Coefficients (c1 .. c4)           :  [ -5.72931,  0.87475,  0.00000,  0.00000 ]
+   Non Linear Core Correction term:
+     Rcore                             :  0.36240
+     Core charge                       :  20.30288
+   NonLocal PSP Parameters:
+   - Channel (l)                       :  0
+     Rloc                              :  0.43411
+     h_ij matrix:
+     -  [  9.01955, -2.41858,  0.00000 ]
+     -  [ -2.41858,  0.55473,  0.00000 ]
+     -  [  0.00000,  0.00000,  0.00000 ]
+   No. of projectors                   :  2
+   PSP XC                              : "XC: Perdew, Burke & Ernzerhof"
+ - Symbol                              : O #Type No.  02
+   No. of Electrons                    :  6
+   No. of Atoms                        :  2
+   Radii of active regions (AU):
+     Coarse                            :  1.21558
+     Fine                              :  0.34550
+     Coarse PSP                        :  0.69008
+     Source                            : PSP File
+   Grid Spacing threshold (AU)         :  0.86
+   Pseudopotential type                : HGH-K + NLCC
+   Local Pseudo Potential (HGH convention):
+     Rloc                              :  0.34550
+     Coefficients (c1 .. c4)           :  [ -11.74359,  1.90654,  0.00000,  0.00000 ]
+   Non Linear Core Correction term:
+     Rcore                             :  0.34517
+     Core charge                       :  9.02086
+   NonLocal PSP Parameters:
+   - Channel (l)                       :  0
+     Rloc                              :  0.36804
+     h_ij matrix:
+     -  [  10.85891, -2.12901,  0.00000 ]
+     -  [ -2.12901, -0.42977,  0.00000 ]
+     -  [  0.00000,  0.00000,  0.00000 ]
+   No. of projectors                   :  2
+   PSP XC                              : "XC: Perdew, Burke & Ernzerhof"
+ - Symbol                              : N #Type No.  03
+   No. of Electrons                    :  5
+   No. of Atoms                        :  1
+   Radii of active regions (AU):
+     Coarse                            :  1.37026
+     Fine                              :  0.40469
+     Coarse PSP                        :  0.79801
+     Source                            : PSP File
+   Grid Spacing threshold (AU)         :  1.01
+   Pseudopotential type                : HGH-K + NLCC
+   Local Pseudo Potential (HGH convention):
+     Rloc                              :  0.40469
+     Coefficients (c1 .. c4)           :  [ -8.10098,  1.29419,  0.00000,  0.00000 ]
+   Non Linear Core Correction term:
+     Rcore                             :  0.35406
+     Core charge                       :  13.66218
+   NonLocal PSP Parameters:
+   - Channel (l)                       :  0
+     Rloc                              :  0.42561
+     h_ij matrix:
+     -  [  9.21833, -2.49059,  0.00000 ]
+     -  [ -2.49059,  0.38356,  0.00000 ]
+     -  [  0.00000,  0.00000,  0.00000 ]
+   No. of projectors                   :  2
+   PSP XC                              : "XC: Perdew, Burke & Ernzerhof"
+ - Symbol                              : H #Type No.  04
+   No. of Electrons                    :  1
+   No. of Atoms                        :  5
+   Radii of active regions (AU):
+     Coarse                            :  1.46342
+     Fine                              :  0.22873
+     Coarse PSP                        :  0.00000
+     Source                            : PSP File
+   Grid Spacing threshold (AU)         :  0.57
+   Pseudopotential type                : HGH-K
+   Local Pseudo Potential (HGH convention):
+     Rloc                              :  0.22873
+     Coefficients (c1 .. c4)           :  [ -3.72290,  0.65760,  0.00000,  0.00000 ]
+   No. of projectors                   :  0
+   PSP XC                              : "XC: Perdew, Burke & Ernzerhof"
+  #----------------------------------------------- Atom Positions (specified and grid units)
+ Atomic structure:
+   units                               : angstroem
+   positions:
+   - C: [ 6.883149906,  5.296611080,  4.667197597] # [  26.01,  20.02,  17.64 ] 0001
+   - C: [ 5.552594671,  4.527147996,  4.651422728] # [  20.99,  17.11,  17.58 ] 0002
+   - O: [ 6.716870828,  6.633079916,  4.600525736] # [  25.39,  25.07,  17.39 ] 0003
+   - O: [ 7.960716198,  4.744177126,  4.721009299] # [  30.09,  17.93,  17.84 ] 0004
+   - N: [ 4.402597804,  5.447808633,  4.673852882] # [  16.64,  20.59,  17.66 ] 0005
+   - H: [ 3.807768889,  5.347148915,  3.854105657] # [  14.39,  20.21,  14.57 ] 0006
+   - H: [ 5.560201226,  3.898279666,  3.750512190] # [  21.01,  14.73,  14.17 ] 0007
+   - H: [ 3.821495579,  5.316463726,  5.499512353] # [  14.44,  20.09,  20.79 ] 0008
+   - H: [ 5.559182679,  3.842649023,  5.510089001] # [  21.01,  14.52,  20.83 ] 0009
+   - H: [ 5.720994677,  6.740895196,  4.623599107] # [  21.62,  25.48,  17.47 ] 0010
+   position offset                     :  [ -11.671, -10.071, -8.7970 ]
+   Rigid Shift Applied (AU)            :  [  11.671,  10.071,  8.7970 ]
+  #------------------------------------------------------------------------- Grid properties
+ Box Grid spacings                     :  [  0.5000,  0.5000,  0.5000 ]
+ Sizes of the simulation domain:
+   AU                                  :  [  21.000,  20.000,  17.500 ]
+   Angstroem                           :  [  11.113,  10.584,  9.2606 ]
+   Grid Spacing Units                  :  [  42,  40,  35 ]
+   High resolution region boundaries (GU):
+     From                              :  [  11,  11,  11 ]
+     To                                :  [  35,  30,  24 ]
+ High Res. box is treated separately   :  Yes
+ Wavefunctions Descriptors, full simulation domain:
+   Coarse resolution grid:
+     No. of segments                   :  1171
+     No. of points                     :  31144
+   Fine resolution grid:
+     No. of segments                   :  263
+     No. of points                     :  3339
+  #------------------------------------------------------------------- Kernel Initialization
+ Poisson Kernel Initialization:
+    #---------------------------------------------------------------------- Input parameters
+   kernel:
+     screening                         : 0 #      Mu screening parameter
+     isf_order                         : 16 #     Order of the Interpolating Scaling Function family
+     stress_tensor                     : Yes #    Triggers the calculation of the stress tensor
+   environment:
+     cavity                            : none #   Type of the cavity
+     fd_order                          : 16 #     Order of the Finite-difference derivatives for the GPS solver
+     itermax                           : 200 #    Maximum number of iterations of the GPS outer loop
+     minres                            : 1.e-8 #  Convergence threshold of the loop
+     pb_method                         : none #   Defines the method for the Poisson Boltzmann Equation
+   setup:
+     accel                             : none #   Material Acceleration
+     taskgroup_size                    : 0 #      Size of the taskgroups of the Poisson Solver
+     global_data                       : No #     Charge density and Electrostatic potential are given by global arrays
+     verbose                           : Yes #    Verbosity switch
+     output                            : none #   Quantities to be plotted after the main solver routine
+   MPI tasks                           :  2
+   OpenMP threads per MPI task         :  2
+ Poisson Kernel Creation:
+   Boundary Conditions                 : Free
+   Memory Requirements per MPI task:
+     Density (MB)                      :  5.43
+     Kernel (MB)                       :  5.58
+     Full Grid Arrays (MB)             :  9.84
+     Load Balancing of calculations:
+       Density:
+         MPI tasks 0- 0                : 100%
+         MPI task  1                   :  98%
+       Kernel:
+         MPI tasks 0- 0                : 100%
+         MPI task 1                    :  98%
+       Complete LB per task            : 1/3 LB_density + 2/3 LB_kernel
+  #------------------------------------------------------- Electronic Orbital Initialization
+ Total Number of Electrons             :  30
+ Spin treatment                        : Averaged
+ Orbitals Repartition:
+   MPI tasks  0- 0                     :  8
+   MPI tasks  1- 1                     :  7
+ Total Number of Orbitals              :  15
+ Input Occupation Numbers:
+ - Occupation Numbers: {Orbitals No. 1-15:  2.0000}
+ Wavefunctions memory occupation for root MPI process:  3 MB 335 KB 320 B
+ NonLocal PSP Projectors Descriptors:
+   Creation strategy                   : On-the-fly
+   Total number of projectors          :  10
+   Total number of components          :  35326
+   Percent of zero components          :  0
+   Size of workspaces                  :  70684
+   Maximum size of masking arrays for a projector:  2004
+   Cumulative size of masking arrays   :  8805
+ NLCC, Calculate core density for atom : C
+ NLCC, Calculate core density for atom : C
+ NLCC, Calculate core density for atom : O
+ NLCC, Calculate core density for atom : O
+ NLCC, Calculate core density for atom : N
+ NLCC, Calculate core density for atom : H
+ NLCC, Calculate core density for atom : H
+ NLCC, Calculate core density for atom : H
+ NLCC, Calculate core density for atom : H
+ NLCC, Calculate core density for atom : H
+ Analytic core charges for atom species:
+   C                                   :  2.4223052
+   O                                   :  0.9299314
+   N                                   :  0.7600090
+ Total core charge                     :  4.1122456
+ Total core charge on the grid         :  4.1122456 #To be compared with analytic one
+ Communication checks:
+   Transpositions                      :  Yes
+   Reverse transpositions              :  Yes
+  #-------------------------------------------------------- Estimation of Memory Consumption
+ Memory requirements for principal quantities (MiB.KiB):
+   Subspace Matrix                     : 0.1 #    (Number of Orbitals: 15)
+   Single orbital                      : 0.426 #  (Number of Components: 54517)
+   All (distributed) orbitals          : 9.1007 # (Number of Orbitals per MPI task: 8)
+   Wavefunction storage size           : 49.935 # (DIIS/SD workspaces included)
+   Nonlocal Pseudopotential Arrays     : 0.276
+   Full Uncompressed (ISF) grid        : 9.857
+   Workspaces storage size             : 0.885
+ Accumulated memory requirements during principal run stages (MiB.KiB):
+   Kernel calculation                  : 105.1000
+   Density Construction                : 97.646
+   Poisson Solver                      : 120.999
+   Hamiltonian application             : 98.665
+   Orbitals Orthonormalization         : 98.665
+ Estimated Memory Peak (MB)            :  120
+ Value for Exc[rhoc]                   : -2.59392641776711
+ Ion-Ion interaction energy            :  1.00918874488129E+02
+  #---------------------------------------------------------------- Ionic Potential Creation
+ Total ionic charge                    : -30.000000395705
+ Poisson Solver:
+   BC                                  : Free
+   Box                                 :  [  115,  111,  101 ]
+   MPI tasks                           :  2
+ Interaction energy ions multipoles    :  0.0
+ Interaction energy multipoles multipoles:  0.0
+  #----------------------------------- Wavefunctions from PSP Atomic Orbitals Initialization
+ Input Hamiltonian:
+   Policy                              : Wavefunctions from PSP Atomic Orbitals
+   Total No. of Atomic Input Orbitals  :  25
+    #WARNING: A bigger number of virtual orbitals may be needed for better convergence
+   Suggested nvirt                     :  25
+   Inputguess Orbitals Repartition:
+     Minimum                           :  11
+     Maximum                           :  14
+     Average                           :  12.5
+   Atomic Input Orbital Generation:
+   -  {Atom Type: C, Electronic configuration: {
+ s: [ 2.00], 
+ p: [ 2/3,  2/3,  2/3]}}
+   -  {Atom Type: O, Electronic configuration: {
+ s: [ 2.00], 
+ p: [ 4/3,  4/3,  4/3]}}
+   -  {Atom Type: N, Electronic configuration: {
+ s: [ 2.00], 
+ p: [ 1.00,  1.00,  1.00]}}
+   -  {Atom Type: H, Electronic configuration: {
+ s: [ 1.00]}}
+   Wavelet conversion succeeded        :  Yes
+   Deviation from normalization        :  2.28E-05
+   GPU acceleration                    :  No
+   Rho Commun                          : ALLRED
+   Total electronic charge             :  29.999995917734
+   Poisson Solver:
+     BC                                : Free
+     Box                               :  [  115,  111,  101 ]
+     MPI tasks                         :  2
+   Expected kinetic energy             :  38.8301593109
+   Energies: {Ekin:  3.88366483192E+01, Epot: -6.41688782897E+01, Enl:  8.39087723297E+00, 
+                EH:  1.43988690955E+02,  EXC: -1.81993772706E+01, EvXC: -1.95193756138E+01}
+   EKS                                 : -5.86911708612696401E+01
+   Input Guess Overlap Matrices: {Calculated:  Yes, Diagonalized:  Yes}
+    #Eigenvalues and New Occupation Numbers
+   Orbitals: [
+ {e: -1.116742117154E+00, f:  2.0000},  # 00001
+ {e: -1.036881328614E+00, f:  2.0000},  # 00002
+ {e: -8.931023791795E-01, f:  2.0000},  # 00003
+ {e: -7.085677396669E-01, f:  2.0000},  # 00004
+ {e: -5.987641178056E-01, f:  2.0000},  # 00005
+ {e: -5.384164524885E-01, f:  2.0000},  # 00006
+ {e: -5.231955197101E-01, f:  2.0000},  # 00007
+ {e: -5.048064730641E-01, f:  2.0000},  # 00008
+ {e: -4.835875042775E-01, f:  2.0000},  # 00009
+ {e: -4.747979065887E-01, f:  2.0000},  # 00010
+ {e: -4.225526207415E-01, f:  2.0000},  # 00011
+ {e: -3.934204430470E-01, f:  2.0000},  # 00012
+ {e: -3.817503741965E-01, f:  2.0000},  # 00013
+ {e: -3.691392552784E-01, f:  2.0000},  # 00014
+ {e: -3.168314239997E-01, f:  2.0000},  # 00015
+ {e: -1.126353804536E-01, f:  0.0000},  # 00016
+ {e:  8.476983411009E-02, f:  0.0000},  # 00017
+ {e:  1.535067157058E-01, f:  0.0000},  # 00018
+ {e:  2.039997512811E-01, f:  0.0000},  # 00019
+ {e:  3.275510668033E-01, f:  0.0000},  # 00020
+ {e:  3.483837637248E-01, f:  0.0000},  # 00021
+ {e:  3.861316903292E-01, f:  0.0000},  # 00022
+ {e:  4.285137179750E-01, f:  0.0000},  # 00023
+ {e:  4.364766024604E-01, f:  0.0000},  # 00024
+ {e:  4.893407324134E-01, f:  0.0000}] # 00025
+   IG wavefunctions defined            :  Yes
+   Accuracy estimation for this run:
+     Energy                            :  6.49E-03
+     Convergence Criterion             :  4.33E-04
+  #------------------------------------------------------------------- Self-Consistent Cycle
+ Ground State Optimization:
+ - Hamiltonian Optimization: &itrp001
+   - Subspace Optimization: &itrep001-01
+       Wavefunctions Iterations:
+       -  { #---------------------------------------------------------------------- iter: 1
+ GPU acceleration:  No, Rho Commun: ALLRED, Total electronic charge:  29.999995398139, 
+ Poisson Solver: {BC: Free, Box:  [  115,  111,  101 ], MPI tasks:  2}, 
+ Hamiltonian Applied:  Yes, Orthoconstraint:  Yes, Preconditioning:  Yes, 
+ Energies: {Ekin:  4.21087176155E+01, Epot: -6.33125892644E+01, Enl:  6.76203882679E+00, 
+              EH:  1.46712594352E+02,  EXC: -1.85981780222E+01, EvXC: -2.00245406212E+01}, 
+ iter:  1, EKS: -5.88091900868679573E+01, gnrm:  2.42E-01, D: -1.18E-01, 
+ DIIS weights: [ 1.00E+00,  1.00E+00], Orthogonalization Method:  0}
+       -  { #---------------------------------------------------------------------- iter: 2
+ GPU acceleration:  No, Rho Commun: ALLRED, Total electronic charge:  29.999995786863, 
+ Poisson Solver: {BC: Free, Box:  [  115,  111,  101 ], MPI tasks:  2}, 
+ Hamiltonian Applied:  Yes, Orthoconstraint:  Yes, Preconditioning:  Yes, 
+ Energies: {Ekin:  4.14800263471E+01, Epot: -6.31302318895E+01, Enl:  6.69692335018E+00, 
+              EH:  1.46725452616E+02,  EXC: -1.85077306024E+01, EvXC: -1.98910322412E+01}, 
+ iter:  2, EKS: -5.93765586816772810E+01, gnrm:  9.88E-02, D: -5.67E-01, 
+ DIIS weights: [-1.36E-01,  1.14E+00, -8.65E-03], Orthogonalization Method:  0}
+       -  { #---------------------------------------------------------------------- iter: 3
+ GPU acceleration:  No, Rho Commun: ALLRED, Total electronic charge:  29.999995810573, 
+ Poisson Solver: {BC: Free, Box:  [  115,  111,  101 ], MPI tasks:  2}, 
+ Hamiltonian Applied:  Yes, Orthoconstraint:  Yes, Preconditioning:  Yes, 
+ Energies: {Ekin:  4.19062093722E+01, Epot: -6.36002283695E+01, Enl:  6.72552616059E+00, 
+              EH:  1.46794667725E+02,  EXC: -1.85740969505E+01, EvXC: -1.99642014136E+01}, 
+ iter:  3, EKS: -5.94541816108897052E+01, gnrm:  4.48E-02, D: -7.76E-02, 
+ DIIS weights: [-2.07E-02, -4.13E-01,  1.43E+00, -9.92E-04], Orthogonalization Method:  0}
+       -  { #---------------------------------------------------------------------- iter: 4
+ GPU acceleration:  No, Rho Commun: ALLRED, Total electronic charge:  29.999995824545, 
+ Poisson Solver: {BC: Free, Box:  [  115,  111,  101 ], MPI tasks:  2}, 
+ Hamiltonian Applied:  Yes, Orthoconstraint:  Yes, Preconditioning:  Yes, 
+ Energies: {Ekin:  4.19421863476E+01, Epot: -6.38322287173E+01, Enl:  6.70895659777E+00, 
+              EH:  1.46594673991E+02,  EXC: -1.85692477372E+01, EvXC: -1.99528887742E+01}, 
+ iter:  4, EKS: -5.94732442377335673E+01, gnrm:  1.79E-02, D: -1.91E-02, 
+ DIIS weights: [ 2.39E-02, -3.74E-02, -2.91E-01,  1.30E+00, -2.39E-04], 
+     Orthogonalization Method:  0}
+       -  { #---------------------------------------------------------------------- iter: 5
+ GPU acceleration:  No, Rho Commun: ALLRED, Total electronic charge:  29.999995835769, 
+ Poisson Solver: {BC: Free, Box:  [  115,  111,  101 ], MPI tasks:  2}, 
+ Hamiltonian Applied:  Yes, Orthoconstraint:  Yes, Preconditioning:  Yes, 
+ Energies: {Ekin:  4.19827317240E+01, Epot: -6.38789342704E+01, Enl:  6.72582074059E+00, 
+              EH:  1.46610100540E+02,  EXC: -1.85785861464E+01, EvXC: -1.99633683776E+01}, 
+ iter:  5, EKS: -5.94768256262357369E+01, gnrm:  1.02E-02, D: -3.58E-03, 
+ DIIS weights: [-4.26E-03,  5.43E-02, -5.73E-02, -6.79E-01,  1.69E+00, -6.01E-05], 
+     Orthogonalization Method:  0}
+       -  { #---------------------------------------------------------------------- iter: 6
+ GPU acceleration:  No, Rho Commun: ALLRED, Total electronic charge:  29.999995852689, 
+ Poisson Solver: {BC: Free, Box:  [  115,  111,  101 ], MPI tasks:  2}, 
+ Hamiltonian Applied:  Yes, Orthoconstraint:  Yes, Preconditioning:  Yes, 
+ Energies: {Ekin:  4.19678561734E+01, Epot: -6.38917001091E+01, Enl:  6.73259334614E+00, 
+              EH:  1.46590231202E+02,  EXC: -1.85772870685E+01, EvXC: -1.99614620696E+01}, 
+ iter:  6, EKS: -5.94784323022426662E+01, gnrm:  5.78E-03, D: -1.61E-03, 
+ DIIS weights: [-4.44E-04, -4.78E-02,  1.55E-01,  1.20E-01, -1.20E+00,  1.97E+00, 
+                -1.71E-05],           Orthogonalization Method:  0}
+       -  { #---------------------------------------------------------------------- iter: 7
+ GPU acceleration:  No, Rho Commun: ALLRED, Total electronic charge:  29.999995860932, 
+ Poisson Solver: {BC: Free, Box:  [  115,  111,  101 ], MPI tasks:  2}, 
+ Hamiltonian Applied:  Yes, Orthoconstraint:  Yes, Preconditioning:  Yes, 
+ Energies: {Ekin:  4.19647002710E+01, Epot: -6.38952073964E+01, Enl:  6.73674303690E+00, 
+              EH:  1.46588321613E+02,  EXC: -1.85771526372E+01, EvXC: -1.99612760512E+01}, 
+ iter:  7, EKS: -5.94790877995468321E+01, gnrm:  3.18E-03, D: -6.55E-04, 
+ DIIS weights: [ 1.26E-02, -5.85E-02,  4.36E-02,  3.74E-01, -1.24E+00,  1.87E+00, 
+                -5.05E-06],           Orthogonalization Method:  0}
+       -  { #---------------------------------------------------------------------- iter: 8
+ GPU acceleration:  No, Rho Commun: ALLRED, Total electronic charge:  29.999995860191, 
+ Poisson Solver: {BC: Free, Box:  [  115,  111,  101 ], MPI tasks:  2}, 
+ Hamiltonian Applied:  Yes, Orthoconstraint:  Yes, Preconditioning:  Yes, 
+ Energies: {Ekin:  4.19677496039E+01, Epot: -6.38977883173E+01, Enl:  6.73593399577E+00, 
+              EH:  1.46588099589E+02,  EXC: -1.85770934824E+01, EvXC: -1.99611313471E+01}, 
+ iter:  8, EKS: -5.94792919539215319E+01, gnrm:  1.89E-03, D: -2.04E-04, 
+ DIIS weights: [ 4.10E-03, -5.58E-02,  7.70E-02,  2.52E-01, -1.25E+00,  1.97E+00, 
+                -1.73E-06],           Orthogonalization Method:  0}
+       -  { #---------------------------------------------------------------------- iter: 9
+ GPU acceleration:  No, Rho Commun: ALLRED, Total electronic charge:  29.999995859358, 
+ Poisson Solver: {BC: Free, Box:  [  115,  111,  101 ], MPI tasks:  2}, 
+ Hamiltonian Applied:  Yes, Orthoconstraint:  Yes, Preconditioning:  Yes, 
+ Energies: {Ekin:  4.19700185798E+01, Epot: -6.38990147432E+01, Enl:  6.73355593774E+00, 
+              EH:  1.46586703739E+02,  EXC: -1.85768448254E+01, EvXC: -1.99607457299E+01}, 
+ iter:  9, EKS: -5.94793685717336444E+01, gnrm:  1.04E-03, D: -7.66E-05, 
+ DIIS weights: [ 1.63E-02, -7.94E-02,  1.30E-01,  1.02E-01, -9.51E-01,  1.78E+00, 
+                -5.50E-07],           Orthogonalization Method:  0}
+       -  { #--------------------------------------------------------------------- iter: 10
+ GPU acceleration:  No, Rho Commun: ALLRED, Total electronic charge:  29.999995859809, 
+ Poisson Solver: {BC: Free, Box:  [  115,  111,  101 ], MPI tasks:  2}, 
+ Hamiltonian Applied:  Yes, Orthoconstraint:  Yes, Preconditioning:  Yes, 
+ Energies: {Ekin:  4.19727832274E+01, Epot: -6.38988537328E+01, Enl:  6.73260821983E+00, 
+              EH:  1.46588757625E+02,  EXC: -1.85771886140E+01, EvXC: -1.99611413733E+01}, 
+ iter:  10, EKS: -5.94793926635427539E+01, gnrm:  5.71E-04, D: -2.41E-05, 
+ DIIS weights: [ 2.20E-02, -9.71E-02,  2.24E-01, -9.37E-02, -7.98E-01,  1.74E+00, 
+                -1.58E-07],           Orthogonalization Method:  0}
+       -  { #--------------------------------------------------------------------- iter: 11
+ GPU acceleration:  No, Rho Commun: ALLRED, Total electronic charge:  29.999995860423, 
+ Poisson Solver: {BC: Free, Box:  [  115,  111,  101 ], MPI tasks:  2}, 
+ Hamiltonian Applied:  Yes, Orthoconstraint:  Yes, Preconditioning:  Yes, 
+ Energies: {Ekin:  4.19722955708E+01, Epot: -6.38987141700E+01, Enl:  6.73204243184E+00, 
+              EH:  1.46587822873E+02,  EXC: -1.85770539244E+01, EvXC: -1.99609786543E+01}, 
+ iter:  11, EKS: -5.94793998223213549E+01, gnrm:  3.07E-04, D: -7.16E-06, 
+ DIIS weights: [ 9.69E-03, -9.54E-02,  2.41E-01, -1.05E-01, -7.45E-01,  1.70E+00, 
+                -5.17E-08],           Orthogonalization Method:  0}
+       -  { #--------------------------------------------------------------------- iter: 12
+ GPU acceleration:  No, Rho Commun: ALLRED, Total electronic charge:  29.999995860401, 
+ Poisson Solver: {BC: Free, Box:  [  115,  111,  101 ], MPI tasks:  2}, 
+ Hamiltonian Applied:  Yes, Orthoconstraint:  Yes, Preconditioning:  Yes, 
+ Energies: {Ekin:  4.19727987553E+01, Epot: -6.38988913325E+01, Enl:  6.73219886952E+00, 
+              EH:  1.46588344255E+02,  EXC: -1.85771841052E+01, EvXC: -1.99611457876E+01}, 
+ iter:  12, EKS: -5.94794017925039071E+01, gnrm:  1.80E-04, D: -1.97E-06, 
+ DIIS weights: [ 2.94E-02, -1.12E-01,  1.97E-01,  3.34E-02, -1.03E+00,  1.88E+00, 
+                -1.69E-08],           Orthogonalization Method:  0}
+       -  { #--------------------------------------------------------------------- iter: 13
+ GPU acceleration:  No, Rho Commun: ALLRED, Total electronic charge:  29.999995860214, 
+ Poisson Solver: {BC: Free, Box:  [  115,  111,  101 ], MPI tasks:  2}, 
+ Hamiltonian Applied:  Yes, Orthoconstraint:  Yes, Preconditioning:  Yes, 
+ Energies: {Ekin:  4.19726860584E+01, Epot: -6.38991652156E+01, Enl:  6.73218395035E+00, 
+              EH:  1.46587940910E+02,  EXC: -1.85771688251E+01, EvXC: -1.99611279903E+01}, 
+ iter:  13, EKS: -5.94794024632901852E+01, gnrm:  9.82E-05, D: -6.71E-07, 
+ DIIS weights: [-5.88E-03, -4.10E-02,  1.69E-01, -6.68E-02, -7.59E-01,  1.70E+00, 
+                -5.12E-09],           Orthogonalization Method:  0}
+       -  &FINAL001  { #---------------------------------------------------------- iter: 14
+ GPU acceleration:  No, Rho Commun: ALLRED, Total electronic charge:  29.999995860129, 
+ Poisson Solver: {BC: Free, Box:  [  115,  111,  101 ], MPI tasks:  2}, 
+ Hamiltonian Applied:  Yes, 
+ iter:  14, EKS: -5.94794026593568645E+01, gnrm:  9.82E-05, D: -1.96E-07,  #FINAL
+ Energies: {Ekin:  4.19728845179E+01, Epot: -6.38993439590E+01, Enl:  6.73218897050E+00, 
+              EH:  1.46587974232E+02,  EXC: -1.85772111307E+01, EvXC: -1.99611786857E+01, 
+            Eion:  1.00918874488E+02,                     Exc(rhoc): -2.59392641777E+00}, 
+ }
+       Non-Hermiticity of Hamiltonian in the Subspace:  1.68E-29
+        #Eigenvalues and New Occupation Numbers
+       Orbitals: [
+ {e: -1.003054017901E+00, f:  2.0000},  # 00001
+ {e: -9.260636547883E-01, f:  2.0000},  # 00002
+ {e: -8.447062589770E-01, f:  2.0000},  # 00003
+ {e: -6.572232742510E-01, f:  2.0000},  # 00004
+ {e: -5.335056307833E-01, f:  2.0000},  # 00005
+ {e: -4.926972917250E-01, f:  2.0000},  # 00006
+ {e: -4.727317166499E-01, f:  2.0000},  # 00007
+ {e: -4.497723797824E-01, f:  2.0000},  # 00008
+ {e: -4.041109961545E-01, f:  2.0000},  # 00009
+ {e: -3.789876868375E-01, f:  2.0000},  # 00010
+ {e: -3.456338592977E-01, f:  2.0000},  # 00011
+ {e: -3.277107255825E-01, f:  2.0000},  # 00012
+ {e: -2.717763541954E-01, f:  2.0000},  # 00013
+ {e: -2.703736235238E-01, f:  2.0000},  # 00014
+ {e: -2.187877648860E-01, f:  2.0000}] # 00015
+ Last Iteration                        : *FINAL001
+  #---------------------------------------------------------------------- Forces Calculation
+ GPU acceleration                      :  No
+ Rho Commun                            : RED_SCT
+ Total electronic charge               :  29.999995860129
+ Poisson Solver:
+   BC                                  : Free
+   Box                                 :  [  115,  111,  101 ]
+   MPI tasks                           :  2
+ Multipole analysis origin             :  [  1.160866E+01,  1.007495E+01,  8.806802E+00 ]
+ Electric Dipole Moment (AU):
+   P vector                            :  [ -2.190433E+00, -3.248347E-01, -3.041588E-02 ]
+   norm(P)                             :  2.21459673E+00
+ Electric Dipole Moment (Debye):
+   P vector                            :  [ -5.567524E+00, -8.256473E-01, -7.730945E-02 ]
+   norm(P)                             :  5.62894289E+00
+ Quadrupole Moment (AU):
+   Q matrix:
+   -  [-3.0414E+00,  3.2414E+00, -3.6851E-01]
+   -  [ 3.2414E+00, -3.1913E+00,  3.0527E-01]
+   -  [-3.6851E-01,  3.0527E-01,  6.2327E+00]
+   trace                               : -5.68E-14
+ Spreads of the electronic density (AU):  [  2.643625E+00,  1.815493E+00,  1.012289E+00 ]
+ Calculate local forces                :  Yes
+ Calculate NLCC forces                 :  Yes
+ Calculate Non Local forces            :  Yes
+  #---------------------------------- Iterative subspace diagonalization of virtual orbitals
+ Orbital restart:
+ #(11:18:01.603)  9% / [=>                       ] ( 1/11,  5.60E+05 it/s), ETA  0.0s
+ #(11:18:01.604) 18% - [===>                     ] ( 2/11,  3.89E+04 it/s), ETA  0.0s
+ #(11:18:01.604) 27% \ [=====>                   ] ( 3/11,  4.33E+04 it/s), ETA  0.0s
+ #(11:18:01.604) 36% | [========>                ] ( 4/11,  4.67E+04 it/s), ETA  0.0s
+ #(11:18:01.604) 45% / [==========>              ] ( 5/11,  4.94E+04 it/s), ETA  0.0s
+ #(11:18:01.604) 54% - [============>            ] ( 6/11,  5.15E+04 it/s), ETA  0.0s
+ #(11:18:01.604) 63% \ [==============>          ] ( 7/11,  5.32E+04 it/s), ETA  0.0s
+ #(11:18:01.604) 72% | [=================>       ] ( 8/11,  5.45E+04 it/s), ETA  0.0s
+ #(11:18:01.604) 81% / [===================>     ] ( 9/11,  5.56E+04 it/s), ETA  0.0s
+ #(11:18:01.604) 90% - [=====================>   ] ( 10/11,  5.61E+04 it/s), ETA  0.0s
+ #(11:18:01.604)100% \ [========================>] ( 11/11,  5.70E+04 it/s), Tot  0.0s
+ Generation of input wavefunction data for atom: C
+ Electronic configuration: {
+ s: [ 2.00], 
+ p: [ 2/3,  2/3,  2/3]}
+ Generation of input wavefunction data for atom: O
+ Electronic configuration: {
+ s: [ 2.00], 
+ p: [ 4/3,  4/3,  4/3]}
+ Generation of input wavefunction data for atom: N
+ Electronic configuration: {
+ s: [ 2.00], 
+ p: [ 1.00,  1.00,  1.00]}
+ Generation of input wavefunction data for atom: H
+ Electronic configuration: {
+ s: [ 1.00]}
+ Wavelet conversion succeeded          :  Yes
+ Deviation from normalization          :  9.84E-01
+ L2 Norm - 1 and Rayleigh quotient (Davidson):
+    #Kpt #0001  BZ coord. =  [  0.000000,  0.000000,  0.000000 ]
+ -  [  3.330669E-15,  6.099686E-01 ] # 0001
+ -  [  8.548717E-15,  5.731620E-01 ] # 0002
+ -  [  5.551115E-16,  4.981084E-01 ] # 0003
+ -  [ -3.108624E-15,  6.786365E-01 ] # 0004
+ -  [  6.328271E-15,  5.270701E-01 ] # 0005
+ -  [ -1.332268E-15,  3.699352E-01 ] # 0006
+ -  [  3.38618E-14,  4.314679E-01 ] # 0007
+ -  [  2.642331E-14,  5.665182E-01 ] # 0008
+ -  [  1.162404E-13,  9.132545E-01 ] # 0009
+ -  [ -1.398881E-14,  4.950747E-01 ] # 0010
+ -  [  1.065814E-14,  5.895011E-01 ] # 0011
+ -  [  2.109424E-15,  1.782700E-01 ] # 0012
+ -  [  2.806644E-13,  1.015946E+00 ] # 0013
+ -  [ -1.287859E-14,  7.229217E-01 ] # 0014
+ -  [  7.505108E-14,  7.605026E-01 ] # 0015
+ -  [  5.77316E-15,  5.069867E-01 ] # 0016
+ -  [  6.550316E-15,  1.413784E+00 ] # 0017
+ -  [  7.627232E-14,  8.252827E-01 ] # 0018
+ -  [  7.01661E-14,  6.639152E-01 ] # 0019
+ -  [ -5.795364E-14,  8.253313E-01 ] # 0020
+  #-------------------------------------------------------------------------------  iter=  1
+ Gradient Norm: {Value:  1.38748E+00, Exit criterion:  1.00E-04}
+ Eigenvalues and eigenstate residue:
+ -  [ -1.7063E-02,  2.6532E+00 ] # 0001
+ -  [ -3.4658E-03,  2.1695E+00 ] # 0002
+ -  [  4.8637E-02,  2.0323E+00 ] # 0003
+ -  [  5.9321E-02,  2.7661E+00 ] # 0004
+ -  [  7.1418E-02,  2.7654E+00 ] # 0005
+ -  [  1.3051E-01,  1.8100E+00 ] # 0006
+ -  [  1.3877E-01,  2.5067E+00 ] # 0007
+ -  [  1.4352E-01,  3.4231E+00 ] # 0008
+ -  [  1.7368E-01,  4.1234E+00 ] # 0009
+ -  [  1.7841E-01,  2.7476E+00 ] # 0010
+ -  [  2.1244E-01,  2.7680E+00 ] # 0011
+ -  [  2.3609E-01,  1.8531E+00 ] # 0012
+ -  [  2.6428E-01,  4.0267E+00 ] # 0013
+ -  [  3.1319E-01,  3.0320E+00 ] # 0014
+ -  [  3.2323E-01,  3.4826E+00 ] # 0015
+ -  [  3.8596E-01,  2.8343E+00 ] # 0016
+ -  [  4.3417E-01,  4.8305E+00 ] # 0017
+ -  [  4.6994E-01,  3.4288E+00 ] # 0018
+ -  [  5.1419E-01,  2.8715E+00 ] # 0019
+ -  [  6.4226E-01,  4.3983E+00 ] # 0020
+  #-------------------------------------------------------------------------------  iter=  2
+ Gradient Norm: {Value:  3.76309E-01, Exit criterion:  1.00E-04}
+ Eigenvalues and eigenstate residue:
+ -  [ -3.1404E-02,  3.6321E-01 ] # 0001
+ -  [ -2.8192E-02,  6.7629E-01 ] # 0002
+ -  [  2.2991E-02,  6.4985E-01 ] # 0003
+ -  [  2.8199E-02,  7.4841E-01 ] # 0004
+ -  [  4.5599E-02,  7.0519E-01 ] # 0005
+ -  [  9.4227E-02,  8.2242E-01 ] # 0006
+ -  [  1.0193E-01,  6.2995E-01 ] # 0007
+ -  [  1.1685E-01,  8.3564E-01 ] # 0008
+ -  [  1.2189E-01,  8.2176E-01 ] # 0009
+ -  [  1.4296E-01,  1.0717E+00 ] # 0010
+ -  [  1.6164E-01,  9.3339E-01 ] # 0011
+ -  [  1.9471E-01,  8.1283E-01 ] # 0012
+ -  [  2.0451E-01,  1.3235E+00 ] # 0013
+ -  [  2.1201E-01,  1.2251E+00 ] # 0014
+ -  [  2.2491E-01,  1.6744E+00 ] # 0015
+ -  [  2.6969E-01,  1.5904E+00 ] # 0016
+ -  [  3.1647E-01,  1.4061E+00 ] # 0017
+ -  [  3.2384E-01,  2.2547E+00 ] # 0018
+ -  [  3.8275E-01,  1.9430E+00 ] # 0019
+ -  [  3.9271E-01,  2.3788E+00 ] # 0020
+  #-------------------------------------------------------------------------------  iter=  3
+ Gradient Norm: {Value:  2.46832E-01, Exit criterion:  1.00E-04}
+ Eigenvalues and eigenstate residue:
+ -  [ -3.3755E-02,  2.4603E-01 ] # 0001
+ -  [ -3.0574E-02,  3.0013E-01 ] # 0002
+ -  [  1.9843E-02,  3.6878E-01 ] # 0003
+ -  [  2.2491E-02,  4.4133E-01 ] # 0004
+ -  [  4.0667E-02,  3.9435E-01 ] # 0005
+ -  [  8.3947E-02,  5.1228E-01 ] # 0006
+ -  [  8.9091E-02,  6.3723E-01 ] # 0007
+ -  [  1.0278E-01,  5.4364E-01 ] # 0008
+ -  [  1.0673E-01,  7.2075E-01 ] # 0009
+ -  [  1.2539E-01,  5.6271E-01 ] # 0010
+ -  [  1.3396E-01,  1.0786E+00 ] # 0011
+ -  [  1.7499E-01,  9.2812E-01 ] # 0012
+ -  [  1.8973E-01,  7.1639E-01 ] # 0013
+ -  [  1.9491E-01,  7.3389E-01 ] # 0014
+ -  [  2.0007E-01,  1.0404E+00 ] # 0015
+ -  [  2.172E-01,  1.3329E+00 ] # 0016
+ -  [  2.7308E-01,  9.8189E-01 ] # 0017
+ -  [  2.9253E-01,  1.3835E+00 ] # 0018
+ -  [  2.9649E-01,  1.7822E+00 ] # 0019
+ -  [  3.3164E-01,  1.6547E+00 ] # 0020
+  #-------------------------------------------------------------------------------  iter=  4
+ Gradient Norm: {Value:  1.59559E-01, Exit criterion:  1.00E-04}
+ Eigenvalues and eigenstate residue:
+ -  [ -3.4218E-02,  1.0631E-01 ] # 0001
+ -  [ -3.0965E-02,  1.0656E-01 ] # 0002
+ -  [  1.9385E-02,  1.1359E-01 ] # 0003
+ -  [  2.1161E-02,  1.8360E-01 ] # 0004
+ -  [  3.9315E-02,  1.7996E-01 ] # 0005
+ -  [  7.475E-02,  4.5593E-01 ] # 0006
+ -  [  8.7048E-02,  2.6640E-01 ] # 0007
+ -  [  9.5652E-02,  4.0382E-01 ] # 0008
+ -  [  9.8239E-02,  4.5781E-01 ] # 0009
+ -  [  1.1769E-01,  5.1498E-01 ] # 0010
+ -  [  1.2656E-01,  4.5727E-01 ] # 0011
+ -  [  1.6678E-01,  4.9428E-01 ] # 0012
+ -  [  1.7956E-01,  5.4561E-01 ] # 0013
+ -  [  1.864E-01,  4.8737E-01 ] # 0014
+ -  [  1.887E-01,  6.3891E-01 ] # 0015
+ -  [  2.0391E-01,  7.7050E-01 ] # 0016
+ -  [  2.4755E-01,  8.8363E-01 ] # 0017
+ -  [  2.591E-01,  7.1692E-01 ] # 0018
+ -  [  2.7722E-01,  9.7114E-01 ] # 0019
+ -  [  2.9309E-01,  1.1441E+00 ] # 0020
+  #-------------------------------------------------------------------------------  iter=  5
+ Gradient Norm: {Value:  1.20911E-01, Exit criterion:  1.00E-04}
+ Eigenvalues and eigenstate residue:
+ -  [ -3.4335E-02,  6.0484E-02 ] # 0001
+ -  [ -3.1057E-02,  5.9604E-02 ] # 0002
+ -  [  1.9283E-02,  6.4047E-02 ] # 0003
+ -  [  2.0745E-02,  1.2152E-01 ] # 0004
+ -  [  3.8821E-02,  1.3229E-01 ] # 0005
+ -  [  7.0113E-02,  3.9114E-01 ] # 0006
+ -  [  8.6333E-02,  1.5559E-01 ] # 0007
+ -  [  9.156E-02,  3.4549E-01 ] # 0008
+ -  [  9.3963E-02,  3.9260E-01 ] # 0009
+ -  [  1.1463E-01,  3.0084E-01 ] # 0010
+ -  [  1.226E-01,  3.3520E-01 ] # 0011
+ -  [  1.6138E-01,  3.8170E-01 ] # 0012
+ -  [  1.7352E-01,  4.4258E-01 ] # 0013
+ -  [  1.773E-01,  5.4477E-01 ] # 0014
+ -  [  1.8626E-01,  2.9524E-01 ] # 0015
+ -  [  1.991E-01,  4.1633E-01 ] # 0016
+ -  [  2.279E-01,  8.7130E-01 ] # 0017
+ -  [  2.3762E-01,  9.5156E-01 ] # 0018
+ -  [  2.6016E-01,  6.2429E-01 ] # 0019
+ -  [  2.6749E-01,  1.0669E+00 ] # 0020
+  #-------------------------------------------------------------------------------  iter=  6
+ Gradient Norm: {Value:  7.93847E-02, Exit criterion:  1.00E-04}
+ Eigenvalues and eigenstate residue:
+ -  [ -3.4368E-02,  2.8607E-02 ] # 0001
+ -  [ -3.1082E-02,  2.6750E-02 ] # 0002
+ -  [  1.9256E-02,  2.7253E-02 ] # 0003
+ -  [  2.06E-02,  5.9808E-02 ] # 0004
+ -  [  3.8624E-02,  7.3557E-02 ] # 0005
+ -  [  6.804E-02,  2.4571E-01 ] # 0006
+ -  [  8.5836E-02,  9.9339E-02 ] # 0007
+ -  [  8.9052E-02,  2.5147E-01 ] # 0008
+ -  [  9.2079E-02,  2.2980E-01 ] # 0009
+ -  [  1.1292E-01,  2.3352E-01 ] # 0010
+ -  [  1.2054E-01,  2.5796E-01 ] # 0011
+ -  [  1.5801E-01,  3.4391E-01 ] # 0012
+ -  [  1.6878E-01,  3.6254E-01 ] # 0013
+ -  [  1.7191E-01,  4.7154E-01 ] # 0014
+ -  [  1.8492E-01,  1.9357E-01 ] # 0015
+ -  [  1.962E-01,  2.8636E-01 ] # 0016
+ -  [  2.1246E-01,  7.1730E-01 ] # 0017
+ -  [  2.2396E-01,  6.6016E-01 ] # 0018
+ -  [  2.4222E-01,  7.9042E-01 ] # 0019
+ -  [  2.5575E-01,  6.3971E-01 ] # 0020
+  #-------------------------------------------------------------------------------  iter=  7
+ Gradient Norm: {Value:  6.23201E-02, Exit criterion:  1.00E-04}
+ Eigenvalues and eigenstate residue:
+ -  [ -3.4379E-02,  1.9035E-02 ] # 0001
+ -  [ -3.109E-02,  1.7372E-02 ] # 0002
+ -  [  1.9247E-02,  1.7786E-02 ] # 0003
+ -  [  2.0542E-02,  4.5724E-02 ] # 0004
+ -  [  3.8534E-02,  5.8631E-02 ] # 0005
+ -  [  6.7072E-02,  1.8337E-01 ] # 0006
+ -  [  8.53E-02,  1.1215E-01 ] # 0007
+ -  [  8.7759E-02,  2.1052E-01 ] # 0008
+ -  [  9.1165E-02,  1.7956E-01 ] # 0009
+ -  [  1.119E-01,  1.6149E-01 ] # 0010
+ -  [  1.195E-01,  1.7450E-01 ] # 0011
+ -  [  1.5602E-01,  2.4403E-01 ] # 0012
+ -  [  1.6338E-01,  3.9617E-01 ] # 0013
+ -  [  1.7E-01,  3.0665E-01 ] # 0014
+ -  [  1.8404E-01,  1.6965E-01 ] # 0015
+ -  [  1.9404E-01,  2.6966E-01 ] # 0016
+ -  [  2.0216E-01,  6.5138E-01 ] # 0017
+ -  [  2.1472E-01,  5.9388E-01 ] # 0018
+ -  [  2.2958E-01,  6.8900E-01 ] # 0019
+ -  [  2.4691E-01,  5.3641E-01 ] # 0020
+  #-------------------------------------------------------------------------------  iter=  8
+ Gradient Norm: {Value:  4.38320E-02, Exit criterion:  1.00E-04}
+ Eigenvalues and eigenstate residue:
+ -  [ -3.4383E-02,  1.0067E-02 ] # 0001
+ -  [ -3.1092E-02,  8.8954E-03 ] # 0002
+ -  [  1.9244E-02,  9.1531E-03 ] # 0003
+ -  [  2.0517E-02,  2.5378E-02 ] # 0004
+ -  [  3.8491E-02,  3.5561E-02 ] # 0005
+ -  [  6.6603E-02,  1.1721E-01 ] # 0006
+ -  [  8.4778E-02,  1.0413E-01 ] # 0007
+ -  [  8.7199E-02,  1.2949E-01 ] # 0008
+ -  [  9.0695E-02,  1.1401E-01 ] # 0009
+ -  [  1.113E-01,  1.4258E-01 ] # 0010
+ -  [  1.1894E-01,  1.3286E-01 ] # 0011
+ -  [  1.5479E-01,  2.1201E-01 ] # 0012
+ -  [  1.5926E-01,  3.7111E-01 ] # 0013
+ -  [  1.6906E-01,  1.8825E-01 ] # 0014
+ -  [  1.8339E-01,  1.3390E-01 ] # 0015
+ -  [  1.9215E-01,  2.3143E-01 ] # 0016
+ -  [  1.9595E-01,  4.6764E-01 ] # 0017
+ -  [  2.0829E-01,  4.6474E-01 ] # 0018
+ -  [  2.1932E-01,  5.5529E-01 ] # 0019
+ -  [  2.4049E-01,  4.3420E-01 ] # 0020
+  #-------------------------------------------------------------------------------  iter=  9
+ Gradient Norm: {Value:  3.50183E-02, Exit criterion:  1.00E-04}
+ Eigenvalues and eigenstate residue:
+ -  [ -3.4385E-02,  7.4430E-03 ] # 0001
+ -  [ -3.1093E-02,  6.5297E-03 ] # 0002
+ -  [  1.9242E-02,  6.6362E-03 ] # 0003
+ -  [  2.0505E-02,  2.0719E-02 ] # 0004
+ -  [  3.8469E-02,  2.9694E-02 ] # 0005
+ -  [  6.6361E-02,  9.2878E-02 ] # 0006
+ -  [  8.4382E-02,  1.0917E-01 ] # 0007
+ -  [  8.6955E-02,  9.4747E-02 ] # 0008
+ -  [  9.0446E-02,  9.2946E-02 ] # 0009
+ -  [  1.1095E-01,  9.7149E-02 ] # 0010
+ -  [  1.1865E-01,  9.3034E-02 ] # 0011
+ -  [  1.5395E-01,  1.5165E-01 ] # 0012
+ -  [  1.5646E-01,  3.2542E-01 ] # 0013
+ -  [  1.685E-01,  1.4815E-01 ] # 0014
+ -  [  1.8288E-01,  1.2915E-01 ] # 0015
+ -  [  1.9025E-01,  2.3966E-01 ] # 0016
+ -  [  1.9198E-01,  3.9052E-01 ] # 0017
+ -  [  2.0358E-01,  4.1415E-01 ] # 0018
+ -  [  2.1078E-01,  5.6593E-01 ] # 0019
+ -  [  2.3607E-01,  3.9476E-01 ] # 0020
+  #------------------------------------------------------------------------------  iter=  10
+ Gradient Norm: {Value:  2.49810E-02, Exit criterion:  1.00E-04}
+ Eigenvalues and eigenstate residue:
+ -  [ -3.4385E-02,  4.2223E-03 ] # 0001
+ -  [ -3.1094E-02,  3.6899E-03 ] # 0002
+ -  [  1.9242E-02,  3.8407E-03 ] # 0003
+ -  [  2.0499E-02,  1.2274E-02 ] # 0004
+ -  [  3.8458E-02,  1.8703E-02 ] # 0005
+ -  [  6.6233E-02,  6.1592E-02 ] # 0006
+ -  [  8.4122E-02,  8.0439E-02 ] # 0007
+ -  [  8.6838E-02,  5.7389E-02 ] # 0008
+ -  [  9.031E-02,  6.1306E-02 ] # 0009
+ -  [  1.1074E-01,  8.4258E-02 ] # 0010
+ -  [  1.1848E-01,  7.1349E-02 ] # 0011
+ -  [  1.5319E-01,  1.4595E-01 ] # 0012
+ -  [  1.5478E-01,  2.4401E-01 ] # 0013
+ -  [  1.6815E-01,  1.1011E-01 ] # 0014
+ -  [  1.8243E-01,  1.0938E-01 ] # 0015
+ -  [  1.8799E-01,  2.3733E-01 ] # 0016
+ -  [  1.892E-01,  2.8572E-01 ] # 0017
+ -  [  1.9978E-01,  3.4154E-01 ] # 0018
+ -  [  2.0479E-01,  4.3259E-01 ] # 0019
+ -  [  2.3305E-01,  3.0076E-01 ] # 0020
+  #------------------------------------------------------------------------------  iter=  11
+ Gradient Norm: {Value:  2.03301E-02, Exit criterion:  1.00E-04}
+ Eigenvalues and eigenstate residue:
+ -  [ -3.4385E-02,  3.3049E-03 ] # 0001
+ -  [ -3.1094E-02,  2.9370E-03 ] # 0002
+ -  [  1.9242E-02,  2.9322E-03 ] # 0003
+ -  [  2.0496E-02,  1.0320E-02 ] # 0004
+ -  [  3.8451E-02,  1.5996E-02 ] # 0005
+ -  [  6.6162E-02,  5.0711E-02 ] # 0006
+ -  [  8.3961E-02,  7.2661E-02 ] # 0007
+ -  [  8.6777E-02,  4.6248E-02 ] # 0008
+ -  [  9.0235E-02,  5.1244E-02 ] # 0009
+ -  [  1.1061E-01,  5.9381E-02 ] # 0010
+ -  [  1.1839E-01,  5.2391E-02 ] # 0011
+ -  [  1.5235E-01,  1.4278E-01 ] # 0012
+ -  [  1.5397E-01,  1.9558E-01 ] # 0013
+ -  [  1.6792E-01,  9.3441E-02 ] # 0014
+ -  [  1.8181E-01,  1.2233E-01 ] # 0015
+ -  [  1.8474E-01,  2.9829E-01 ] # 0016
+ -  [  1.8769E-01,  2.6129E-01 ] # 0017
+ -  [  1.9668E-01,  3.3220E-01 ] # 0018
+ -  [  2.014E-01,  3.8210E-01 ] # 0019
+ -  [  2.3092E-01,  2.7460E-01 ] # 0020
+  #------------------------------------------------------------------------------  iter=  12
+ Gradient Norm: {Value:  1.46342E-02, Exit criterion:  1.00E-04}
+ Eigenvalues and eigenstate residue:
+ -  [ -3.4386E-02,  1.9397E-03 ] # 0001
+ -  [ -3.1094E-02,  1.7541E-03 ] # 0002
+ -  [  1.9241E-02,  1.8064E-03 ] # 0003
+ -  [  2.0495E-02,  6.3216E-03 ] # 0004
+ -  [  3.8448E-02,  1.0271E-02 ] # 0005
+ -  [  6.6122E-02,  3.4817E-02 ] # 0006
+ -  [  8.3865E-02,  5.0030E-02 ] # 0007
+ -  [  8.6744E-02,  3.0088E-02 ] # 0008
+ -  [  9.0193E-02,  3.4166E-02 ] # 0009
+ -  [  1.1053E-01,  5.1215E-02 ] # 0010
+ -  [  1.1833E-01,  4.0252E-02 ] # 0011
+ -  [  1.516E-01,  1.4653E-01 ] # 0012
+ -  [  1.5359E-01,  1.1620E-01 ] # 0013
+ -  [  1.6777E-01,  7.0344E-02 ] # 0014
+ -  [  1.7977E-01,  1.5549E-01 ] # 0015
+ -  [  1.8279E-01,  2.7197E-01 ] # 0016
+ -  [  1.8673E-01,  1.8407E-01 ] # 0017
+ -  [  1.9444E-01,  2.5684E-01 ] # 0018
+ -  [  1.9955E-01,  2.4530E-01 ] # 0019
+ -  [  2.2936E-01,  2.1449E-01 ] # 0020
+  #------------------------------------------------------------------------------  iter=  13
+ Gradient Norm: {Value:  1.21220E-02, Exit criterion:  1.00E-04}
+ Eigenvalues and eigenstate residue:
+ -  [ -3.4386E-02,  1.5752E-03 ] # 0001
+ -  [ -3.1094E-02,  1.4447E-03 ] # 0002
+ -  [  1.9241E-02,  1.4185E-03 ] # 0003
+ -  [  2.0494E-02,  5.4047E-03 ] # 0004
+ -  [  3.8446E-02,  8.8458E-03 ] # 0005
+ -  [  6.6098E-02,  2.8993E-02 ] # 0006
+ -  [  8.3807E-02,  4.4192E-02 ] # 0007
+ -  [  8.6725E-02,  2.5768E-02 ] # 0008
+ -  [  9.0168E-02,  2.9540E-02 ] # 0009
+ -  [  1.1048E-01,  3.7863E-02 ] # 0010
+ -  [  1.183E-01,  3.1145E-02 ] # 0011
+ -  [  1.5101E-01,  1.3802E-01 ] # 0012
+ -  [  1.5337E-01,  9.2951E-02 ] # 0013
+ -  [  1.6767E-01,  6.2040E-02 ] # 0014
+ -  [  1.7675E-01,  3.1195E-01 ] # 0015
+ -  [  1.8232E-01,  1.5638E-01 ] # 0016
+ -  [  1.8605E-01,  1.5098E-01 ] # 0017
+ -  [  1.9285E-01,  2.3968E-01 ] # 0018
+ -  [  1.9844E-01,  2.0598E-01 ] # 0019
+ -  [  2.2818E-01,  2.0280E-01 ] # 0020
+  #------------------------------------------------------------------------------  iter=  14
+ Gradient Norm: {Value:  8.78731E-03, Exit criterion:  1.00E-04}
+ Eigenvalues and eigenstate residue:
+ -  [ -3.4386E-02,  9.4678E-04 ] # 0001
+ -  [ -3.1094E-02,  8.8758E-04 ] # 0002
+ -  [  1.9241E-02,  9.0964E-04 ] # 0003
+ -  [  2.0494E-02,  3.3773E-03 ] # 0004
+ -  [  3.8445E-02,  5.7524E-03 ] # 0005
+ -  [  6.6085E-02,  2.0415E-02 ] # 0006
+ -  [  8.3773E-02,  3.0051E-02 ] # 0007
+ -  [  8.6715E-02,  1.7273E-02 ] # 0008
+ -  [  9.0154E-02,  1.9748E-02 ] # 0009
+ -  [  1.1045E-01,  3.2148E-02 ] # 0010
+ -  [  1.1828E-01,  2.3743E-02 ] # 0011
+ -  [  1.5057E-01,  1.0998E-01 ] # 0012
+ -  [  1.5323E-01,  6.5285E-02 ] # 0013
+ -  [  1.676E-01,  4.7105E-02 ] # 0014
+ -  [  1.7416E-01,  2.5858E-01 ] # 0015
+ -  [  1.8212E-01,  8.0540E-02 ] # 0016
+ -  [  1.8556E-01,  1.2575E-01 ] # 0017
+ -  [  1.9166E-01,  1.7751E-01 ] # 0018
+ -  [  1.9773E-01,  1.4755E-01 ] # 0019
+ -  [  2.2727E-01,  1.6216E-01 ] # 0020
+  #------------------------------------------------------------------------------  iter=  15
+ Gradient Norm: {Value:  7.39681E-03, Exit criterion:  1.00E-04}
+ Eigenvalues and eigenstate residue:
+ -  [ -3.4386E-02,  7.8655E-04 ] # 0001
+ -  [ -3.1094E-02,  7.4317E-04 ] # 0002
+ -  [  1.9241E-02,  7.2851E-04 ] # 0003
+ -  [  2.0494E-02,  2.9200E-03 ] # 0004
+ -  [  3.8444E-02,  4.9921E-03 ] # 0005
+ -  [  6.6077E-02,  1.7157E-02 ] # 0006
+ -  [  8.3753E-02,  2.6373E-02 ] # 0007
+ -  [  8.6708E-02,  1.5079E-02 ] # 0008
+ -  [  9.0145E-02,  1.7648E-02 ] # 0009
+ -  [  1.1043E-01,  2.4993E-02 ] # 0010
+ -  [  1.1827E-01,  1.9476E-02 ] # 0011
+ -  [  1.5024E-01,  1.0311E-01 ] # 0012
+ -  [  1.5313E-01,  5.9774E-02 ] # 0013
+ -  [  1.6755E-01,  4.3335E-02 ] # 0014
+ -  [  1.7212E-01,  2.6800E-01 ] # 0015
+ -  [  1.82E-01,  6.1594E-02 ] # 0016
+ -  [  1.8519E-01,  1.0723E-01 ] # 0017
+ -  [  1.9073E-01,  1.7663E-01 ] # 0018
+ -  [  1.9724E-01,  1.2990E-01 ] # 0019
+ -  [  2.2655E-01,  1.5736E-01 ] # 0020
+  #------------------------------------------------------------------------------  iter=  16
+ Gradient Norm: {Value:  5.44142E-03, Exit criterion:  1.00E-04}
+ Eigenvalues and eigenstate residue:
+ -  [ -3.4386E-02,  4.7942E-04 ] # 0001
+ -  [ -3.1094E-02,  4.6113E-04 ] # 0002
+ -  [  1.9241E-02,  4.8667E-04 ] # 0003
+ -  [  2.0493E-02,  1.8330E-03 ] # 0004
+ -  [  3.8444E-02,  3.2384E-03 ] # 0005
+ -  [  6.6072E-02,  1.2222E-02 ] # 0006
+ -  [  8.3741E-02,  1.8004E-02 ] # 0007
+ -  [  8.6704E-02,  1.0282E-02 ] # 0008
+ -  [  9.014E-02,  1.1966E-02 ] # 0009
+ -  [  1.1042E-01,  2.1152E-02 ] # 0010
+ -  [  1.1826E-01,  1.4936E-02 ] # 0011
+ -  [  1.4999E-01,  7.9479E-02 ] # 0012
+ -  [  1.5305E-01,  4.4970E-02 ] # 0013
+ -  [  1.675E-01,  3.3647E-02 ] # 0014
+ -  [  1.7057E-01,  2.0056E-01 ] # 0015
+ -  [  1.8192E-01,  4.9805E-02 ] # 0016
+ -  [  1.8492E-01,  9.1423E-02 ] # 0017
+ -  [  1.9E-01,  1.3670E-01 ] # 0018
+ -  [  1.9691E-01,  9.9321E-02 ] # 0019
+ -  [  2.2596E-01,  1.2968E-01 ] # 0020
+  #------------------------------------------------------------------------------  iter=  17
+ Gradient Norm: {Value:  4.58602E-03, Exit criterion:  1.00E-04}
+ Eigenvalues and eigenstate residue:
+ -  [ -3.4386E-02,  4.0250E-04 ] # 0001
+ -  [ -3.1094E-02,  3.9026E-04 ] # 0002
+ -  [  1.9241E-02,  3.8935E-04 ] # 0003
+ -  [  2.0493E-02,  1.5880E-03 ] # 0004
+ -  [  3.8444E-02,  2.8189E-03 ] # 0005
+ -  [  6.6069E-02,  1.0315E-02 ] # 0006
+ -  [  8.3734E-02,  1.5720E-02 ] # 0007
+ -  [  8.6702E-02,  9.0152E-03 ] # 0008
+ -  [  9.0137E-02,  1.0626E-02 ] # 0009
+ -  [  1.1041E-01,  1.6811E-02 ] # 0010
+ -  [  1.1825E-01,  1.2500E-02 ] # 0011
+ -  [  1.4981E-01,  7.5820E-02 ] # 0012
+ -  [  1.53E-01,  4.3219E-02 ] # 0013
+ -  [  1.6747E-01,  3.3544E-02 ] # 0014
+ -  [  1.6938E-01,  1.9989E-01 ] # 0015
+ -  [  1.8186E-01,  4.1158E-02 ] # 0016
+ -  [  1.847E-01,  8.0045E-02 ] # 0017
+ -  [  1.8941E-01,  1.3901E-01 ] # 0018
+ -  [  1.9666E-01,  8.8109E-02 ] # 0019
+ -  [  2.2548E-01,  1.2521E-01 ] # 0020
+  #------------------------------------------------------------------------------  iter=  18
+ Gradient Norm: {Value:  3.50340E-03, Exit criterion:  1.00E-04}
+ Eigenvalues and eigenstate residue:
+ -  [ -3.4386E-02,  2.5745E-04 ] # 0001
+ -  [ -3.1094E-02,  2.5028E-04 ] # 0002
+ -  [  1.9241E-02,  2.7872E-04 ] # 0003
+ -  [  2.0493E-02,  1.0128E-03 ] # 0004
+ -  [  3.8444E-02,  1.8373E-03 ] # 0005
+ -  [  6.6068E-02,  7.4483E-03 ] # 0006
+ -  [  8.373E-02,  1.1019E-02 ] # 0007
+ -  [  8.6701E-02,  6.3187E-03 ] # 0008
+ -  [  9.0135E-02,  7.6076E-03 ] # 0009
+ -  [  1.104E-01,  1.4548E-02 ] # 0010
+ -  [  1.1825E-01,  9.9681E-03 ] # 0011
+ -  [  1.4967E-01,  5.9428E-02 ] # 0012
+ -  [  1.5296E-01,  3.3239E-02 ] # 0013
+ -  [  1.6742E-01,  3.0024E-02 ] # 0014
+ -  [  1.6851E-01,  1.5235E-01 ] # 0015
+ -  [  1.8182E-01,  3.7604E-02 ] # 0016
+ -  [  1.8454E-01,  7.0869E-02 ] # 0017
+ -  [  1.8893E-01,  1.1120E-01 ] # 0018
+ -  [  1.9648E-01,  7.3162E-02 ] # 0019
+ -  [  2.2508E-01,  1.0821E-01 ] # 0020
+  #------------------------------------------------------------------------------  iter=  19
+ Gradient Norm: {Value:  2.89962E-03, Exit criterion:  1.00E-04}
+ Eigenvalues and eigenstate residue:
+ -  [ -3.4386E-02,  2.1920E-04 ] # 0001
+ -  [ -3.1094E-02,  2.1601E-04 ] # 0002
+ -  [  1.9241E-02,  2.1910E-04 ] # 0003
+ -  [  2.0493E-02,  8.7336E-04 ] # 0004
+ -  [  3.8444E-02,  1.5993E-03 ] # 0005
+ -  [  6.6067E-02,  6.2527E-03 ] # 0006
+ -  [  8.3727E-02,  9.3157E-03 ] # 0007
+ -  [  8.67E-02,  5.4102E-03 ] # 0008
+ -  [  9.0133E-02,  6.6256E-03 ] # 0009
+ -  [  1.104E-01,  1.1567E-02 ] # 0010
+ -  [  1.1825E-01,  8.3745E-03 ] # 0011
+ -  [  1.4957E-01,  5.5426E-02 ] # 0012
+ -  [  1.5293E-01,  3.2032E-02 ] # 0013
+ -  [  1.6732E-01,  4.1397E-02 ] # 0014
+ -  [  1.679E-01,  1.4361E-01 ] # 0015
+ -  [  1.8179E-01,  3.0486E-02 ] # 0016
+ -  [  1.8441E-01,  6.2415E-02 ] # 0017
+ -  [  1.8854E-01,  1.1049E-01 ] # 0018
+ -  [  1.9635E-01,  6.4144E-02 ] # 0019
+ -  [  2.2475E-01,  1.0342E-01 ] # 0020
+  #------------------------------------------------------------------------------  iter=  20
+ Gradient Norm: {Value:  2.27895E-03, Exit criterion:  1.00E-04}
+ Eigenvalues and eigenstate residue:
+ -  [ -3.4386E-02,  1.5221E-04 ] # 0001
+ -  [ -3.1094E-02,  1.4999E-04 ] # 0002
+ -  [  1.9241E-02,  1.6701E-04 ] # 0003
+ -  [  2.0493E-02,  5.5980E-04 ] # 0004
+ -  [  3.8444E-02,  1.0438E-03 ] # 0005
+ -  [  6.6066E-02,  4.5757E-03 ] # 0006
+ -  [  8.3726E-02,  6.8297E-03 ] # 0007
+ -  [  8.6699E-02,  3.9602E-03 ] # 0008
+ -  [  9.0133E-02,  4.8970E-03 ] # 0009
+ -  [  1.1039E-01,  9.9510E-03 ] # 0010
+ -  [  1.1825E-01,  6.8305E-03 ] # 0011
+ -  [  1.4949E-01,  4.4777E-02 ] # 0012
+ -  [  1.529E-01,  2.5641E-02 ] # 0013
+ -  [  1.6705E-01,  6.1797E-02 ] # 0014
+ -  [  1.6763E-01,  1.0253E-01 ] # 0015
+ -  [  1.8176E-01,  2.9126E-02 ] # 0016
+ -  [  1.843E-01,  5.4794E-02 ] # 0017
+ -  [  1.8822E-01,  9.2924E-02 ] # 0018
+ -  [  1.9624E-01,  5.5333E-02 ] # 0019
+ -  [  2.2447E-01,  9.1534E-02 ] # 0020
+  #------------------------------------------------------------------------------  iter=  21
+ Gradient Norm: {Value:  1.88229E-03, Exit criterion:  1.00E-04}
+ Eigenvalues and eigenstate residue:
+ -  [ -3.4386E-02,  1.3339E-04 ] # 0001
+ -  [ -3.1094E-02,  1.3383E-04 ] # 0002
+ -  [  1.9241E-02,  1.3085E-04 ] # 0003
+ -  [  2.0493E-02,  4.7059E-04 ] # 0004
+ -  [  3.8444E-02,  8.9164E-04 ] # 0005
+ -  [  6.6066E-02,  3.8075E-03 ] # 0006
+ -  [  8.3725E-02,  5.5972E-03 ] # 0007
+ -  [  8.6699E-02,  3.3035E-03 ] # 0008
+ -  [  9.0132E-02,  4.1851E-03 ] # 0009
+ -  [  1.1039E-01,  8.1484E-03 ] # 0010
+ -  [  1.1825E-01,  5.7757E-03 ] # 0011
+ -  [  1.4943E-01,  4.0776E-02 ] # 0012
+ -  [  1.5288E-01,  2.3991E-02 ] # 0013
+ -  [  1.6672E-01,  9.3422E-02 ] # 0014
+ -  [  1.6755E-01,  6.0487E-02 ] # 0015
+ -  [  1.8174E-01,  2.3413E-02 ] # 0016
+ -  [  1.8422E-01,  5.0548E-02 ] # 0017
+ -  [  1.8796E-01,  8.9220E-02 ] # 0018
+ -  [  1.9616E-01,  4.9005E-02 ] # 0019
+ -  [  2.2423E-01,  8.7050E-02 ] # 0020
+  #------------------------------------------------------------------------------  iter=  22
+ Gradient Norm: {Value:  1.52977E-03, Exit criterion:  1.00E-04}
+ Eigenvalues and eigenstate residue:
+ -  [ -3.4386E-02,  1.0840E-04 ] # 0001
+ -  [ -3.1094E-02,  1.0867E-04 ] # 0002
+ -  [  1.9241E-02,  1.0820E-04 ] # 0003
+ -  [  2.0493E-02,  3.1026E-04 ] # 0004
+ -  [  3.8444E-02,  5.9369E-04 ] # 0005
+ -  [  6.6065E-02,  2.8313E-03 ] # 0006
+ -  [  8.3724E-02,  4.3061E-03 ] # 0007
+ -  [  8.6699E-02,  2.5447E-03 ] # 0008
+ -  [  9.0132E-02,  3.3003E-03 ] # 0009
+ -  [  1.1039E-01,  7.0142E-03 ] # 0010
+ -  [  1.1824E-01,  4.9554E-03 ] # 0011
+ -  [  1.4939E-01,  3.3453E-02 ] # 0012
+ -  [  1.5287E-01,  2.0365E-02 ] # 0013
+ -  [  1.6643E-01,  8.9330E-02 ] # 0014
+ -  [  1.6752E-01,  3.5298E-02 ] # 0015
+ -  [  1.8173E-01,  2.3809E-02 ] # 0016
+ -  [  1.8415E-01,  4.2939E-02 ] # 0017
+ -  [  1.8775E-01,  7.8405E-02 ] # 0018
+ -  [  1.961E-01,  4.4814E-02 ] # 0019
+ -  [  2.2402E-01,  8.1132E-02 ] # 0020
+  #------------------------------------------------------------------------------  iter=  23
+ Gradient Norm: {Value:  1.26800E-03, Exit criterion:  1.00E-04}
+ Eigenvalues and eigenstate residue:
+ -  [ -3.4386E-02,  1.0206E-04 ] # 0001
+ -  [ -3.1094E-02,  1.0433E-04 ] # 0002
+ -  [  1.92413399833E-02,  8.627580881808E-05 ] # 0003
+ -  [  2.0493E-02,  2.6858E-04 ] # 0004
+ -  [  3.8444E-02,  5.3381E-04 ] # 0005
+ -  [  6.6065E-02,  2.4381E-03 ] # 0006
+ -  [  8.3724E-02,  3.4398E-03 ] # 0007
+ -  [  8.6698E-02,  2.0693E-03 ] # 0008
+ -  [  9.0131E-02,  2.7438E-03 ] # 0009
+ -  [  1.1039E-01,  5.8600E-03 ] # 0010
+ -  [  1.1824E-01,  4.0616E-03 ] # 0011
+ -  [  1.4936E-01,  2.9738E-02 ] # 0012
+ -  [  1.5286E-01,  1.8088E-02 ] # 0013
+ -  [  1.662E-01,  8.0265E-02 ] # 0014
+ -  [  1.675E-01,  2.2955E-02 ] # 0015
+ -  [  1.8172E-01,  1.8492E-02 ] # 0016
+ -  [  1.841E-01,  4.1770E-02 ] # 0017
+ -  [  1.8757E-01,  7.2983E-02 ] # 0018
+ -  [  1.9604E-01,  3.9047E-02 ] # 0019
+ -  [  2.2385E-01,  7.4610E-02 ] # 0020
+  #------------------------------------------------------------------------------  iter=  24
+ Gradient Norm: {Value:  9.96763E-04, Exit criterion:  1.00E-04}
+ Eigenvalues and eigenstate residue:
+ -  [ -3.438570612222E-02,  9.297454239085E-05 ] # 0001
+ -  [ -3.109418567054E-02,  9.433953742095E-05 ] # 0002
+ -  [  1.924133989563E-02,  7.439128519793E-05 ] # 0003
+ -  [  2.0493E-02,  1.7018E-04 ] # 0004
+ -  [  3.8444E-02,  3.3405E-04 ] # 0005
+ -  [  6.6065E-02,  1.7129E-03 ] # 0006
+ -  [  8.3723E-02,  2.5159E-03 ] # 0007
+ -  [  8.6698E-02,  1.5122E-03 ] # 0008
+ -  [  9.0131E-02,  2.1913E-03 ] # 0009
+ -  [  1.1039E-01,  4.8193E-03 ] # 0010
+ -  [  1.1824E-01,  3.4625E-03 ] # 0011
+ -  [  1.4934E-01,  2.3072E-02 ] # 0012
+ -  [  1.5285E-01,  1.4734E-02 ] # 0013
+ -  [  1.6602E-01,  6.7824E-02 ] # 0014
+ -  [  1.6749E-01,  1.7991E-02 ] # 0015
+ -  [  1.8171E-01,  1.8399E-02 ] # 0016
+ -  [  1.8405E-01,  3.4124E-02 ] # 0017
+ -  [  1.8743E-01,  6.3184E-02 ] # 0018
+ -  [  1.96E-01,  3.5723E-02 ] # 0019
+ -  [  2.237E-01,  6.9099E-02 ] # 0020
+  #------------------------------------------------------------------------------  iter=  25
+ Gradient Norm: {Value:  8.53637E-04, Exit criterion:  1.00E-04}
+ Eigenvalues and eigenstate residue:
+ -  [ -3.438570614483E-02,  9.094992024038E-05 ] # 0001
+ -  [ -3.109418569181E-02,  9.291998691904E-05 ] # 0002
+ -  [  1.924133984331E-02,  6.526242488699E-05 ] # 0003
+ -  [  2.0493E-02,  1.4678E-04 ] # 0004
+ -  [  3.8444E-02,  2.9862E-04 ] # 0005
+ -  [  6.6065E-02,  1.4846E-03 ] # 0006
+ -  [  8.3723E-02,  2.1152E-03 ] # 0007
+ -  [  8.6698E-02,  1.2932E-03 ] # 0008
+ -  [  9.0131E-02,  1.8350E-03 ] # 0009
+ -  [  1.1039E-01,  4.1591E-03 ] # 0010
+ -  [  1.1824E-01,  2.9157E-03 ] # 0011
+ -  [  1.4932E-01,  2.1565E-02 ] # 0012
+ -  [  1.5285E-01,  1.3598E-02 ] # 0013
+ -  [  1.6588E-01,  6.2620E-02 ] # 0014
+ -  [  1.6749E-01,  1.4071E-02 ] # 0015
+ -  [  1.817E-01,  1.5126E-02 ] # 0016
+ -  [  1.8401E-01,  3.4293E-02 ] # 0017
+ -  [  1.873E-01,  6.0683E-02 ] # 0018
+ -  [  1.9597E-01,  3.2742E-02 ] # 0019
+ -  [  2.2357E-01,  6.5290E-02 ] # 0020
+  #------------------------------------------------------------------------------  iter=  26
+ Gradient Norm: {Value:  6.80046E-04, Exit criterion:  1.00E-04}
+ Eigenvalues and eigenstate residue:
+ -  [ -3.438570615685E-02,  8.839006896841E-05 ] # 0001
+ -  [ -3.1094185703E-02,  9.024199421184E-05 ] # 0002
+ -  [  1.924133981192E-02,  5.938869109646E-05 ] # 0003
+ -  [  2.049325566198E-02,  9.776090417266E-05 ] # 0004
+ -  [  3.8444E-02,  1.9825E-04 ] # 0005
+ -  [  6.6065E-02,  1.0897E-03 ] # 0006
+ -  [  8.3723E-02,  1.6067E-03 ] # 0007
+ -  [  8.6698E-02,  9.8012E-04 ] # 0008
+ -  [  9.0131E-02,  1.4553E-03 ] # 0009
+ -  [  1.1039E-01,  3.4033E-03 ] # 0010
+ -  [  1.1824E-01,  2.4454E-03 ] # 0011
+ -  [  1.4931E-01,  1.7357E-02 ] # 0012
+ -  [  1.5284E-01,  1.1384E-02 ] # 0013
+ -  [  1.6578E-01,  5.3656E-02 ] # 0014
+ -  [  1.6748E-01,  1.1886E-02 ] # 0015
+ -  [  1.8169E-01,  1.4926E-02 ] # 0016
+ -  [  1.8398E-01,  2.8252E-02 ] # 0017
+ -  [  1.872E-01,  5.3284E-02 ] # 0018
+ -  [  1.9594E-01,  2.9363E-02 ] # 0019
+ -  [  2.2345E-01,  5.9839E-02 ] # 0020
+  #------------------------------------------------------------------------------  iter=  27
+ Gradient Norm: {Value:  5.48753E-04, Exit criterion:  1.00E-04}
+ Eigenvalues and eigenstate residue:
+ -  [ -3.438570616319E-02,  8.779577291537E-05 ] # 0001
+ -  [ -3.109418570889E-02,  8.971417756879E-05 ] # 0002
+ -  [  1.924133979287E-02,  5.507723127771E-05 ] # 0003
+ -  [  2.04932554833E-02,  8.316172376364E-05 ] # 0004
+ -  [  3.8444E-02,  1.6970E-04 ] # 0005
+ -  [  6.6065E-02,  8.7821E-04 ] # 0006
+ -  [  8.3723E-02,  1.2800E-03 ] # 0007
+ -  [  8.6698E-02,  7.9096E-04 ] # 0008
+ -  [  9.0131E-02,  1.1986E-03 ] # 0009
+ -  [  1.1039E-01,  2.7420E-03 ] # 0010
+ -  [  1.1824E-01,  1.9967E-03 ] # 0011
+ -  [  1.493E-01,  1.5385E-02 ] # 0012
+ -  [  1.5284E-01,  9.9243E-03 ] # 0013
+ -  [  1.6569E-01,  4.7626E-02 ] # 0014
+ -  [  1.6748E-01,  9.5872E-03 ] # 0015
+ -  [  1.8169E-01,  1.1904E-02 ] # 0016
+ -  [  1.8396E-01,  2.6937E-02 ] # 0017
+ -  [  1.8712E-01,  4.8746E-02 ] # 0018
+ -  [  1.9592E-01,  2.5921E-02 ] # 0019
+ -  [  2.2336E-01,  5.4638E-02 ] # 0020
+  #------------------------------------------------------------------------------  iter=  28
+ Gradient Norm: {Value:  4.62912E-04, Exit criterion:  1.00E-04}
+ Eigenvalues and eigenstate residue:
+ -  [ -3.438570616661E-02,  8.703352926963E-05 ] # 0001
+ -  [ -3.109418571203E-02,  8.894595053743E-05 ] # 0002
+ -  [  1.924133978135E-02,  5.315509509683E-05 ] # 0003
+ -  [  2.049325538239E-02,  5.508335476990E-05 ] # 0004
+ -  [  3.8444E-02,  1.1116E-04 ] # 0005
+ -  [  6.6065E-02,  6.5087E-04 ] # 0006
+ -  [  8.3723E-02,  1.0369E-03 ] # 0007
+ -  [  8.6698E-02,  6.4040E-04 ] # 0008
+ -  [  9.0131E-02,  1.0109E-03 ] # 0009
+ -  [  1.1039E-01,  2.3679E-03 ] # 0010
+ -  [  1.1824E-01,  1.7920E-03 ] # 0011
+ -  [  1.4929E-01,  1.3117E-02 ] # 0012
+ -  [  1.5284E-01,  8.9138E-03 ] # 0013
+ -  [  1.6563E-01,  4.3678E-02 ] # 0014
+ -  [  1.6748E-01,  8.9246E-03 ] # 0015
+ -  [  1.8168E-01,  1.2335E-02 ] # 0016
+ -  [  1.8394E-01,  2.2817E-02 ] # 0017
+ -  [  1.8705E-01,  4.4869E-02 ] # 0018
+ -  [  1.959E-01,  2.4660E-02 ] # 0019
+ -  [  2.2327E-01,  5.3975E-02 ] # 0020
+  #------------------------------------------------------------------------------  iter=  29
+ Gradient Norm: {Value:  3.59874E-04, Exit criterion:  1.00E-04}
+ Eigenvalues and eigenstate residue:
+ -  [ -3.438570616844E-02,  8.684366968296E-05 ] # 0001
+ -  [ -3.109418571371E-02,  8.882502373102E-05 ] # 0002
+ -  [  1.924133977433E-02,  5.101015270455E-05 ] # 0003
+ -  [  2.049325532576E-02,  4.856619439057E-05 ] # 0004
+ -  [  3.844365736047E-02,  9.998299836827E-05 ] # 0005
+ -  [  6.6065E-02,  5.4231E-04 ] # 0006
+ -  [  8.3723E-02,  7.9496E-04 ] # 0007
+ -  [  8.6698E-02,  4.9840E-04 ] # 0008
+ -  [  9.0131E-02,  7.5448E-04 ] # 0009
+ -  [  1.1039E-01,  1.8456E-03 ] # 0010
+ -  [  1.1824E-01,  1.3453E-03 ] # 0011
+ -  [  1.4929E-01,  1.1377E-02 ] # 0012
+ -  [  1.5284E-01,  7.3986E-03 ] # 0013
+ -  [  1.6557E-01,  3.7337E-02 ] # 0014
+ -  [  1.6748E-01,  6.8015E-03 ] # 0015
+ -  [  1.8168E-01,  9.2903E-03 ] # 0016
+ -  [  1.8392E-01,  2.2218E-02 ] # 0017
+ -  [  1.8699E-01,  4.0463E-02 ] # 0018
+ -  [  1.9588E-01,  2.1107E-02 ] # 0019
+ -  [  2.2319E-01,  4.6021E-02 ] # 0020
+  #------------------------------------------------------------------------------  iter=  30
+ Gradient Norm: {Value:  3.23375E-04, Exit criterion:  1.00E-04}
+ Eigenvalues and eigenstate residue:
+ -  [ -3.438570616942E-02,  8.664085996360E-05 ] # 0001
+ -  [ -3.10941857146E-02,  8.861350548247E-05 ] # 0002
+ -  [  1.924133977004E-02,  5.051684489070E-05 ] # 0003
+ -  [  2.049325529398E-02,  3.416098451208E-05 ] # 0004
+ -  [  3.844365721723E-02,  6.903951747873E-05 ] # 0005
+ -  [  6.6065E-02,  4.2884E-04 ] # 0006
+ -  [  8.3723E-02,  6.6810E-04 ] # 0007
+ -  [  8.6698E-02,  4.1925E-04 ] # 0008
+ -  [  9.0131E-02,  6.7909E-04 ] # 0009
+ -  [  1.1039E-01,  1.7005E-03 ] # 0010
+ -  [  1.1824E-01,  1.2766E-03 ] # 0011
+ -  [  1.4929E-01,  9.4480E-03 ] # 0012
+ -  [  1.5283E-01,  6.7137E-03 ] # 0013
+ -  [  1.6553E-01,  3.3733E-02 ] # 0014
+ -  [  1.6748E-01,  6.6804E-03 ] # 0015
+ -  [  1.8168E-01,  9.8255E-03 ] # 0016
+ -  [  1.8391E-01,  1.9048E-02 ] # 0017
+ -  [  1.8694E-01,  3.7185E-02 ] # 0018
+ -  [  1.9587E-01,  2.0160E-02 ] # 0019
+ -  [  2.2313E-01,  4.6487E-02 ] # 0020
+  #------------------------------------------------------------------------------  iter=  31
+ Gradient Norm: {Value:  2.53312E-04, Exit criterion:  1.00E-04}
+ Eigenvalues and eigenstate residue:
+ -  [ -3.438570616995E-02,  8.658681170466E-05 ] # 0001
+ -  [ -3.109418571508E-02,  8.857155974919E-05 ] # 0002
+ -  [  1.924133976742E-02,  4.974279900781E-05 ] # 0003
+ -  [  2.049325527595E-02,  3.063907897708E-05 ] # 0004
+ -  [  3.844365713375E-02,  6.101332928260E-05 ] # 0005
+ -  [  6.6065E-02,  3.4793E-04 ] # 0006
+ -  [  8.3723E-02,  5.1330E-04 ] # 0007
+ -  [  8.6698E-02,  3.2524E-04 ] # 0008
+ -  [  9.0131E-02,  5.1855E-04 ] # 0009
+ -  [  1.1039E-01,  1.3360E-03 ] # 0010
+ -  [  1.1824E-01,  9.8693E-04 ] # 0011
+ -  [  1.4928E-01,  8.2416E-03 ] # 0012
+ -  [  1.5283E-01,  5.6113E-03 ] # 0013
+ -  [  1.655E-01,  2.9037E-02 ] # 0014
+ -  [  1.6747E-01,  5.1439E-03 ] # 0015
+ -  [  1.8168E-01,  7.7044E-03 ] # 0016
+ -  [  1.8389E-01,  1.8138E-02 ] # 0017
+ -  [  1.869E-01,  3.4021E-02 ] # 0018
+ -  [  1.9586E-01,  1.8427E-02 ] # 0019
+ -  [  2.2307E-01,  4.1293E-02 ] # 0020
+  #------------------------------------------------------------------------------  iter=  32
+ Gradient Norm: {Value:  2.27025E-04, Exit criterion:  1.00E-04}
+ Eigenvalues and eigenstate residue:
+ -  [ -3.438570617024E-02,  8.653521751623E-05 ] # 0001
+ -  [ -3.109418571533E-02,  8.851706313304E-05 ] # 0002
+ -  [  1.924133976581E-02,  4.952122461603E-05 ] # 0003
+ -  [  2.049325526582E-02,  2.451777076187E-05 ] # 0004
+ -  [  3.844365708595E-02,  4.624118279251E-05 ] # 0005
+ -  [  6.6065E-02,  2.7867E-04 ] # 0006
+ -  [  8.3723E-02,  4.2689E-04 ] # 0007
+ -  [  8.6698E-02,  2.7117E-04 ] # 0008
+ -  [  9.0131E-02,  4.7025E-04 ] # 0009
+ -  [  1.1039E-01,  1.2192E-03 ] # 0010
+ -  [  1.1824E-01,  9.2271E-04 ] # 0011
+ -  [  1.4928E-01,  6.7196E-03 ] # 0012
+ -  [  1.5283E-01,  4.9502E-03 ] # 0013
+ -  [  1.6548E-01,  2.5579E-02 ] # 0014
+ -  [  1.6747E-01,  5.0266E-03 ] # 0015
+ -  [  1.8167E-01,  7.8750E-03 ] # 0016
+ -  [  1.8389E-01,  1.5793E-02 ] # 0017
+ -  [  1.8687E-01,  3.1113E-02 ] # 0018
+ -  [  1.9585E-01,  1.7157E-02 ] # 0019
+ -  [  2.2302E-01,  4.0765E-02 ] # 0020
+  #------------------------------------------------------------------------------  iter=  33
+ Gradient Norm: {Value:  1.76208E-04, Exit criterion:  1.00E-04}
+ Eigenvalues and eigenstate residue:
+ -  [ -3.43857061704E-02,  8.651588469099E-05 ] # 0001
+ -  [ -3.109418571547E-02,  8.850240185275E-05 ] # 0002
+ -  [  1.924133976481E-02,  4.921005447341E-05 ] # 0003
+ -  [  2.049325525999E-02,  2.259106555984E-05 ] # 0004
+ -  [  3.844365705784E-02,  4.123400009308E-05 ] # 0005
+ -  [  6.6065E-02,  2.2204E-04 ] # 0006
+ -  [  8.3723E-02,  3.2015E-04 ] # 0007
+ -  [  8.6698E-02,  2.0499E-04 ] # 0008
+ -  [  9.0131E-02,  3.5439E-04 ] # 0009
+ -  [  1.1039E-01,  9.5006E-04 ] # 0010
+ -  [  1.1824E-01,  7.0480E-04 ] # 0011
+ -  [  1.4928E-01,  5.9560E-03 ] # 0012
+ -  [  1.5283E-01,  4.0473E-03 ] # 0013
+ -  [  1.6546E-01,  2.2039E-02 ] # 0014
+ -  [  1.6747E-01,  3.8416E-03 ] # 0015
+ -  [  1.8167E-01,  6.1449E-03 ] # 0016
+ -  [  1.8388E-01,  1.5518E-02 ] # 0017
+ -  [  1.8684E-01,  2.8815E-02 ] # 0018
+ -  [  1.9584E-01,  1.5740E-02 ] # 0019
+ -  [  2.2297E-01,  3.6146E-02 ] # 0020
+  #------------------------------------------------------------------------------  iter=  34
+ Gradient Norm: {Value:  1.63421E-04, Exit criterion:  1.00E-04}
+ Eigenvalues and eigenstate residue:
+ -  [ -3.438570617049E-02,  8.650072944143E-05 ] # 0001
+ -  [ -3.109418571554E-02,  8.848633705386E-05 ] # 0002
+ -  [  1.924133976419E-02,  4.914157157081E-05 ] # 0003
+ -  [  2.049325525674E-02,  1.999650785837E-05 ] # 0004
+ -  [  3.844365704174E-02,  3.390509511058E-05 ] # 0005
+ -  [  6.6065E-02,  1.8268E-04 ] # 0006
+ -  [  8.3723E-02,  2.8263E-04 ] # 0007
+ -  [  8.6698E-02,  1.8106E-04 ] # 0008
+ -  [  9.0131E-02,  3.3248E-04 ] # 0009
+ -  [  1.1039E-01,  8.9017E-04 ] # 0010
+ -  [  1.1824E-01,  6.8429E-04 ] # 0011
+ -  [  1.4928E-01,  5.0079E-03 ] # 0012
+ -  [  1.5283E-01,  3.7852E-03 ] # 0013
+ -  [  1.6544E-01,  2.0239E-02 ] # 0014
+ -  [  1.6747E-01,  3.9537E-03 ] # 0015
+ -  [  1.8167E-01,  6.4629E-03 ] # 0016
+ -  [  1.8387E-01,  1.3500E-02 ] # 0017
+ -  [  1.8682E-01,  2.5863E-02 ] # 0018
+ -  [  1.9583E-01,  1.4547E-02 ] # 0019
+ -  [  2.2293E-01,  3.6356E-02 ] # 0020
+  #------------------------------------------------------------------------------  iter=  35
+ Gradient Norm: {Value:  1.24505E-04, Exit criterion:  1.00E-04}
+ Eigenvalues and eigenstate residue:
+ -  [ -3.438570617054E-02,  8.649382725043E-05 ] # 0001
+ -  [ -3.109418571558E-02,  8.848167721660E-05 ] # 0002
+ -  [  1.924133976381E-02,  4.900919255473E-05 ] # 0003
+ -  [  2.049325525489E-02,  1.912186072282E-05 ] # 0004
+ -  [  3.844365703233E-02,  3.141775145766E-05 ] # 0005
+ -  [  6.6065E-02,  1.4324E-04 ] # 0006
+ -  [  8.3723E-02,  2.0599E-04 ] # 0007
+ -  [  8.6698E-02,  1.3300E-04 ] # 0008
+ -  [  9.0131E-02,  2.4260E-04 ] # 0009
+ -  [  1.1039E-01,  6.7934E-04 ] # 0010
+ -  [  1.1824E-01,  5.0911E-04 ] # 0011
+ -  [  1.4928E-01,  4.3416E-03 ] # 0012
+ -  [  1.5283E-01,  2.9550E-03 ] # 0013
+ -  [  1.6543E-01,  1.6774E-02 ] # 0014
+ -  [  1.6747E-01,  2.8923E-03 ] # 0015
+ -  [  1.8167E-01,  4.9125E-03 ] # 0016
+ -  [  1.8386E-01,  1.3397E-02 ] # 0017
+ -  [  1.868E-01,  2.4133E-02 ] # 0018
+ -  [  1.9583E-01,  1.3372E-02 ] # 0019
+ -  [  2.2289E-01,  3.2001E-02 ] # 0020
+  #------------------------------------------------------------------------------  iter=  36
+ Gradient Norm: {Value:  1.19845E-04, Exit criterion:  1.00E-04}
+ Eigenvalues and eigenstate residue:
+ -  [ -3.438570617056E-02,  8.648979398829E-05 ] # 0001
+ -  [ -3.10941857156E-02,  8.847726523126E-05 ] # 0002
+ -  [  1.924133976357E-02,  4.898970576039E-05 ] # 0003
+ -  [  2.049325525384E-02,  1.822171432082E-05 ] # 0004
+ -  [  3.844365702688E-02,  2.843615064688E-05 ] # 0005
+ -  [  6.6065E-02,  1.2167E-04 ] # 0006
+ -  [  8.3723E-02,  1.9616E-04 ] # 0007
+ -  [  8.6698E-02,  1.2661E-04 ] # 0008
+ -  [  9.0131E-02,  2.3817E-04 ] # 0009
+ -  [  1.1039E-01,  6.5546E-04 ] # 0010
+ -  [  1.1824E-01,  5.1974E-04 ] # 0011
+ -  [  1.4928E-01,  3.6940E-03 ] # 0012
+ -  [  1.5283E-01,  3.0171E-03 ] # 0013
+ -  [  1.6542E-01,  1.6211E-02 ] # 0014
+ -  [  1.6747E-01,  3.1990E-03 ] # 0015
+ -  [  1.8167E-01,  5.5358E-03 ] # 0016
+ -  [  1.8386E-01,  1.1062E-02 ] # 0017
+ -  [  1.8678E-01,  2.2588E-02 ] # 0018
+ -  [  1.9582E-01,  1.3395E-02 ] # 0019
+ -  [  2.2286E-01,  3.5414E-02 ] # 0020
+  #------------------------------------------------------------------------------  iter=  37
+ Gradient Norm: {Value:  8.43374E-05, Exit criterion:  1.00E-04}
+ Iteration for Davidson convergence    :  36
+ Complete list of energy eigenvalues:
+    #Kpt #0001  BZ coord. =  [  0.000000,  0.000000,  0.000000 ]
+ - e_occ                               : -1.00305401790136E+00 # 0001
+ - e_occ                               : -9.26063654788326E-01 # 0002
+ - e_occ                               : -8.44706258977047E-01 # 0003
+ - e_occ                               : -6.57223274250976E-01 # 0004
+ - e_occ                               : -5.33505630783348E-01 # 0005
+ - e_occ                               : -4.92697291725043E-01 # 0006
+ - e_occ                               : -4.72731716649875E-01 # 0007
+ - e_occ                               : -4.49772379782358E-01 # 0008
+ - e_occ                               : -4.04110996154515E-01 # 0009
+ - e_occ                               : -3.78987686837474E-01 # 0010
+ - e_occ                               : -3.45633859297675E-01 # 0011
+ - e_occ                               : -3.27710725582531E-01 # 0012
+ - e_occ                               : -2.71776354195397E-01 # 0013
+ - e_occ                               : -2.70373623523794E-01 # 0014
+ - e_occ                               : -2.18787764885980E-01 # 0015
+ - HOMO LUMO gap (AU, eV)              :  [  1.84402058715416E-01,  5.01783542371790E+00 ]
+ - e_vrt                               : -3.43857061705637E-02 # 0001
+ - e_vrt                               : -3.10941857156041E-02 # 0002
+ - e_vrt                               :  1.92413397635727E-02 # 0003
+ - e_vrt                               :  2.04932552538386E-02 # 0004
+ - e_vrt                               :  3.84436570268818E-02 # 0005
+ - e_vrt                               :  6.60650791784440E-02 # 0006
+ - e_vrt                               :  8.37230500523274E-02 # 0007
+ - e_vrt                               :  8.66982556980325E-02 # 0008
+ - e_vrt                               :  9.01310165142887E-02 # 0009
+ - e_vrt                               :  1.10387204814016E-01 # 0010
+ - e_vrt                               :  1.18243031466154E-01 # 0011
+ - e_vrt                               :  1.49277651201538E-01 # 0012
+ - e_vrt                               :  1.52830261727976E-01 # 0013
+ - e_vrt                               :  1.65421229388340E-01 # 0014
+ - e_vrt                               :  1.67472382845569E-01 # 0015
+ - e_vrt                               :  1.81669910697475E-01 # 0016
+ - e_vrt                               :  1.83859266908212E-01 # 0017
+ - e_vrt                               :  1.86779451865434E-01 # 0018
+ - e_vrt                               :  1.95823452907038E-01 # 0019
+ - e_vrt                               :  2.22857578202053E-01 # 0020
+  #-------------------------------- Warnings obtained during the run, check their relevance!
+ WARNINGS:
+ - A bigger number of virtual orbitals may be needed for better convergence
+  #-------------------------------------------------------------------- Timing for root process
+ Timings for root process:
+   CPU time (s)                        :  50.36
+   Elapsed time (s)                    :  26.31
+ BigDFT infocode                       :  0
+ Average noise forces: {x: -2.49164701E-04, y: -8.21454397E-04, z: -4.37977030E-03, 
+                    total:  4.46309962E-03}
+ Clean forces norm (Ha/Bohr): {maxval:  7.618070214080E-03, fnrm2:  1.361302180476E-04}
+ Raw forces norm (Ha/Bohr): {maxval:  9.528815693645E-03, fnrm2:  1.873684073408E-04}
+  #-------------------------------------------------------------------- Atomic Forces (Ha/Bohr)
+ Atomic Forces (Ha/Bohr):
+ -  {C: [ 8.794833371535E-06,  2.581178435698E-04,  2.756102701157E-03]} # 0001
+ -  {C: [-6.912090087965E-04,  3.250304811370E-04,  1.287169597033E-03]} # 0002
+ -  {O: [-5.212180013266E-03,  4.052396685142E-03, -2.940207023299E-03]} # 0003
+ -  {O: [ 5.187439074069E-03, -4.951390846223E-03, -2.570836114461E-03]} # 0004
+ -  {N: [-1.642719229182E-04, -4.775911383231E-04,  3.176558734345E-04]} # 0005
+ -  {H: [ 2.133105373004E-03,  5.891464708971E-04, -6.944822844682E-04]} # 0006
+ -  {H: [ 2.880195887101E-04,  6.232039162790E-04, -1.852721650963E-05]} # 0007
+ -  {H: [ 8.810370648215E-05, -8.635053276348E-05, -1.191710304976E-03]} # 0008
+ -  {H: [-1.670008744203E-03, -6.139995045774E-04,  1.078044806051E-03]} # 0009
+ -  {H: [ 3.220711354675E-05,  2.814366248622E-04,  1.976789966039E-03]} # 0010
+ Energy (Hartree)                      : -5.94794026593568645E+01
+ Force Norm (Hartree/Bohr)             :  1.16674855066374941E-02
+ Memory Consumption Report:
+   Tot. No. of Allocations             :  23560
+   Tot. No. of Deallocations           :  23560
+   Remaining Memory (B)                :  0
+   Memory occupation:
+     Peak Value (MB)                   :  208.105
+     for the array                     : f_i
+     in the routine                    : vxcpostprocessing
+     Memory Peak of process            : 242.588 MB
+ Walltime since initialization         :  00:00:26.610295434
+ Max No. of dictionaries used          :  6336 #( 1144 still in use)
+ Number of dictionary folders allocated:  1
