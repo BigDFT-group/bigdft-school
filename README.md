@@ -1,6 +1,6 @@
 # BigDFT School project.
 
-This project contans the material for training about BigDFT code which could be execute via Google colab.
+This project contains the material for training about BigDFT code which could be execute via Google colab.
 There are multiple ways to run these notebooks. You have to open a google colab session and Start by the Installation tutorial.
 
 To do that:
